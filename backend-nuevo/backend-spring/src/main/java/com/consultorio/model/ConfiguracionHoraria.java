@@ -12,7 +12,7 @@ public class ConfiguracionHoraria extends Auditoria {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "dia_semana", nullable = false)
+    @Column(name = "dia_semana", nullable = false, updatable = false)
     private DiaSemana diaSemana;
 
     @Column(nullable = false)

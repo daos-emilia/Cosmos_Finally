@@ -11,21 +11,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AgendaController {
 
     @FXML private Label lblUsuario;
-    @FXML private DatePicker datePicker;
-    @FXML private ListView<String> listHorarios;
-    @FXML private VBox panelDetalleTurno;
-    @FXML private Label lblFechaSeleccionada;
-    @FXML private Label lblHoraSeleccionada;
-    @FXML private Label lblDuracion;
-    @FXML private Label lblUbicacion;
-    @FXML private Label lblEstadoTurno;
+
+    // Labels para configuración horaria
+    @FXML private Label lblDiasTrabajo;
+    @FXML private Label lblTurnoManana;
+    @FXML private Label lblTurnoTarde;
+    @FXML private Label lblDuracionSesion;
+    @FXML private Label lblTiempoDescanso;
+    @FXML private Label lblUltimaActualizacion;
 
     private String usuarioActual;
     private String rolActual;
@@ -34,42 +37,10 @@ public class AgendaController {
 
     @FXML
     public void initialize() {
-        // Configurar DatePicker para mostrar el mes actual
-        datePicker.setValue(LocalDate.now());
+        System.out.println("🔄 Inicializando AgendaController...");
 
-        // Configurar formato de fecha en español
-        datePicker.setConverter(new javafx.util.StringConverter<LocalDate>() {
-            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        });
-
-        // Ocultar panel de detalle inicialmente
-        panelDetalleTurno.setVisible(false);
-
-        // Configurar listener para cuando se selecciona una fecha
-        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            onFechaSeleccionada(newValue);
-        });
-
-        // Cargar horarios para hoy
-        onFechaSeleccionada(LocalDate.now());
+        // Cargar configuración horaria actual
+        cargarConfiguracionHoraria();
     }
 
     public void setUsuario(String usuario, String rol, Stage previousStage, boolean wasMaximized) {
@@ -80,77 +51,151 @@ public class AgendaController {
         lblUsuario.setText("Bienvenido/a, " + usuario + " (" + rol + ")");
     }
 
-    private void onFechaSeleccionada(LocalDate fecha) {
-        if (fecha == null) return;
-
-        // Mostrar la fecha seleccionada
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
-        String fechaFormateada = fecha.format(formatter);
-        fechaFormateada = fechaFormateada.substring(0, 1).toUpperCase() + fechaFormateada.substring(1);
-        lblFechaSeleccionada.setText("Fecha: " + fechaFormateada);
-
-        // Cargar horarios disponibles desde el backend
-        cargarHorariosDisponibles(fecha);
-
-        // Ocultar detalle hasta que seleccionen un horario
-        panelDetalleTurno.setVisible(false);
-    }
-
-    private void cargarHorariosDisponibles(LocalDate fecha) {
-        listHorarios.getItems().clear();
-        listHorarios.getItems().add("🔄 Cargando horarios disponibles...");
-
+    private void cargarConfiguracionHoraria() {
         try {
-            System.out.println("🔄 Cargando horarios disponibles para: " + fecha);
+            System.out.println("🔄 Cargando configuración horaria actual...");
 
-            List<String> horarios = HttpClientUtil.getHorariosDisponibles(fecha);
+            List<Map<String, Object>> configuraciones = HttpClientUtil.getConfiguracionHoraria();
 
-            listHorarios.getItems().clear();
-
-            if (horarios == null || horarios.isEmpty()) {
-                listHorarios.getItems().add("❌ No hay horarios disponibles para esta fecha");
-                System.out.println("📭 No hay horarios disponibles para: " + fecha);
+            if (configuraciones == null || configuraciones.isEmpty()) {
+                lblDiasTrabajo.setText("No configurado");
+                lblTurnoManana.setText("No configurado");
+                lblTurnoTarde.setText("No configurado");
+                lblDuracionSesion.setText("No configurado");
+                lblTiempoDescanso.setText("No configurado");
+                lblUltimaActualizacion.setText("Sin datos");
                 return;
             }
 
-            // ✅ MEJORA: Formatear horarios con estilo
-            for (String horario : horarios) {
-                listHorarios.getItems().add("🕐 " + horario + " hs - Disponible");
+            // Obtener días activos
+            List<String> diasActivos = configuraciones.stream()
+                    .filter(config -> Boolean.TRUE.equals(config.get("activo")))
+                    .map(config -> {
+                        String dia = (String) config.get("diaSemana");
+                        return dia.substring(0, 1).toUpperCase() + dia.substring(1).toLowerCase();
+                    })
+                    .collect(Collectors.toList());
+
+            if (diasActivos.isEmpty()) {
+                lblDiasTrabajo.setText("Ningún día activo");
+            } else {
+                lblDiasTrabajo.setText(String.join(", ", diasActivos));
             }
 
-            System.out.println("✅ " + horarios.size() + " horarios cargados para: " + fecha);
+            // Obtener configuración del primer día (todos tienen la misma configuración de horarios)
+            Map<String, Object> primeraConfig = configuraciones.get(0);
 
-            // Configurar selección de horario
-            listHorarios.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null && !newValue.contains("Cargando") && !newValue.contains("No hay")) {
-                    // Extraer solo la hora del formato "🕐 HH:mm hs - Disponible"
-                    String horarioLimpio = newValue.replace("🕐 ", "").replace(" hs - Disponible", "").trim();
-                    mostrarDetalleTurno(horarioLimpio);
+            // DEBUG: Imprimir todas las claves disponibles
+            System.out.println("🔍 DEBUG - Claves disponibles en primeraConfig:");
+            for (String key : primeraConfig.keySet()) {
+                System.out.println("   - " + key + " = " + primeraConfig.get(key));
+            }
+
+            // Turno Mañana
+            Boolean turnoManana = (Boolean) primeraConfig.get("turnoManana");
+            if (Boolean.TRUE.equals(turnoManana)) {
+                // El backend devuelve "horaInicioManana" y "horaFinManana"
+                String inicioManana = (String) primeraConfig.get("horaInicioManana");
+                String finManana = (String) primeraConfig.get("horaFinManana");
+                System.out.println("🔍 DEBUG - Turno Mañana: horaInicioManana=" + inicioManana + ", horaFinManana=" + finManana);
+                if (inicioManana != null && finManana != null) {
+                    // Formatear para mostrar solo HH:mm (sin segundos)
+                    String inicioFormateado = inicioManana.substring(0, 5);
+                    String finFormateado = finManana.substring(0, 5);
+                    lblTurnoManana.setText("Activo (" + inicioFormateado + " - " + finFormateado + ")");
+                } else {
+                    lblTurnoManana.setText("Activo (sin horarios definidos)");
                 }
-            });
+            } else {
+                lblTurnoManana.setText("Inactivo");
+            }
+
+            // Turno Tarde
+            Boolean turnoTarde = (Boolean) primeraConfig.get("turnoTarde");
+            if (Boolean.TRUE.equals(turnoTarde)) {
+                // El backend devuelve "horaInicioTarde" y "horaFinTarde"
+                String inicioTarde = (String) primeraConfig.get("horaInicioTarde");
+                String finTarde = (String) primeraConfig.get("horaFinTarde");
+                System.out.println("🔍 DEBUG - Turno Tarde: horaInicioTarde=" + inicioTarde + ", horaFinTarde=" + finTarde);
+                if (inicioTarde != null && finTarde != null) {
+                    // Formatear para mostrar solo HH:mm (sin segundos)
+                    String inicioFormateado = inicioTarde.substring(0, 5);
+                    String finFormateado = finTarde.substring(0, 5);
+                    lblTurnoTarde.setText("Activo (" + inicioFormateado + " - " + finFormateado + ")");
+                } else {
+                    lblTurnoTarde.setText("Activo (sin horarios definidos)");
+                }
+            } else {
+                lblTurnoTarde.setText("Inactivo");
+            }
+
+            // Duración de sesión
+            Integer duracionSesion = (Integer) primeraConfig.get("duracionSesion");
+            if (duracionSesion != null) {
+                lblDuracionSesion.setText(duracionSesion + " minutos");
+            } else {
+                lblDuracionSesion.setText("No configurado");
+            }
+
+            // Tiempo de descanso
+            Integer tiempoDescanso = (Integer) primeraConfig.get("tiempoDescanso");
+            if (tiempoDescanso != null) {
+                lblTiempoDescanso.setText(tiempoDescanso + " minutos");
+            } else {
+                lblTiempoDescanso.setText("No configurado");
+            }
+
+            // Última actualización (buscar la más reciente)
+            String ultimaActualizacion = null;
+            String usuarioActualizacion = null;
+
+            for (Map<String, Object> config : configuraciones) {
+                String fechaActStr = (String) config.get("fechaActualizacion");
+                System.out.println("🔍 DEBUG - Revisando config: fechaActualizacion=" + fechaActStr + ", actualizadoPor=" + config.get("actualizadoPor"));
+                if (fechaActStr != null) {
+                    if (ultimaActualizacion == null || fechaActStr.compareTo(ultimaActualizacion) > 0) {
+                        ultimaActualizacion = fechaActStr;
+                        usuarioActualizacion = (String) config.get("actualizadoPor");
+                    }
+                }
+            }
+
+            System.out.println("🔍 DEBUG - Última actualización encontrada: " + ultimaActualizacion + " por " + usuarioActualizacion);
+
+            if (ultimaActualizacion != null) {
+                try {
+                    LocalDateTime fechaHora = LocalDateTime.parse(ultimaActualizacion);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    String fechaFormateada = fechaHora.format(formatter);
+
+                    if (usuarioActualizacion != null && !usuarioActualizacion.isEmpty()) {
+                        lblUltimaActualizacion.setText(fechaFormateada + " por " + usuarioActualizacion);
+                    } else {
+                        lblUltimaActualizacion.setText(fechaFormateada);
+                    }
+                } catch (Exception e) {
+                    System.out.println("❌ Error parseando fecha: " + e.getMessage());
+                    lblUltimaActualizacion.setText(ultimaActualizacion);
+                }
+            } else {
+                lblUltimaActualizacion.setText("Sin datos de actualización");
+            }
+
+            System.out.println("✅ Configuración horaria cargada correctamente");
 
         } catch (Exception e) {
-            System.out.println("❌ Error cargando horarios: " + e.getMessage());
+            System.out.println("❌ Error cargando configuración horaria: " + e.getMessage());
             e.printStackTrace();
-            listHorarios.getItems().clear();
-            listHorarios.getItems().add("❌ Error conectando con el servidor");
+            lblDiasTrabajo.setText("Error al cargar");
+            lblTurnoManana.setText("Error al cargar");
+            lblTurnoTarde.setText("Error al cargar");
+            lblDuracionSesion.setText("Error al cargar");
+            lblTiempoDescanso.setText("Error al cargar");
+            lblUltimaActualizacion.setText("Error al cargar");
         }
     }
 
-    private void mostrarDetalleTurno(String horario) {
-        System.out.println("📋 Mostrando detalle para horario: " + horario);
 
-        panelDetalleTurno.setVisible(true);
-        lblHoraSeleccionada.setText("Horario: " + horario + " hs");
-        lblDuracion.setText("Duración: 40 minutos");
-        lblUbicacion.setText("Ubicación: Consultorio Principal");
-
-        // ✅ MEJORA: Mostrar que es solo vista (no se puede pedir turno desde desktop)
-        if (lblEstadoTurno != null) {
-            lblEstadoTurno.setText("Estado: Disponible (Solo lectura)");
-            lblEstadoTurno.setStyle("-fx-text-fill: #7FBBB2; -fx-font-weight: bold;");
-        }
-    }
 
     @FXML
     private void handleConfiguracion() {
@@ -181,8 +226,8 @@ public class AgendaController {
 
             stage.showAndWait();
 
-            // Recargar horarios después de guardar configuración
-            onFechaSeleccionada(datePicker.getValue());
+            // Recargar configuración horaria después de guardar
+            cargarConfiguracionHoraria();
 
         } catch (IOException e) {
             mostrarAlertaError("Error", "No se pudo abrir la configuración", e.getMessage());

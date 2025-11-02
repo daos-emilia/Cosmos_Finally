@@ -24,60 +24,74 @@
 
     <!-- CENTER: Contenido principal de la agenda -->
     <center>
-        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+        <VBox spacing="30" alignment="CENTER" style="-fx-padding: 50;">
 
             <!-- Título -->
-            <Label text="Agenda Mensual" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+            <Label text="Configuración de Agenda" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
 
-            <!-- Selector de fecha -->
-            <HBox spacing="15" alignment="CENTER">
-                <Label text="Seleccione una fecha:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
-                <DatePicker fx:id="datePicker" styleClass="cosmos-text-field"
-                            style="-fx-font-size: 14px; -fx-pref-width: 200;"/>
-            </HBox>
+            <!-- Panel de Configuración Actual -->
+            <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10; -fx-max-width: 700; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="⚙️" style="-fx-font-size: 18px;"/>
+                    <Label text="Configuración Horaria Actual"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                </HBox>
 
-            <!-- Contenedor principal: Calendario + Horarios -->
-            <HBox spacing="30" alignment="TOP_CENTER">
+                <Separator style="-fx-background-color: #C3DFE3;"/>
 
-                <!-- Panel izquierdo: Horarios disponibles -->
-                <VBox spacing="15" style="-fx-pref-width: 300;">
-                    <Label text="Horarios Disponibles:"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+                <!-- Días de trabajo -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="📅 Días de trabajo:" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-min-width: 180; -fx-font-size: 14px;"/>
+                    <Label fx:id="lblDiasTrabajo" text="Cargando..." style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                </HBox>
 
-                    <ListView fx:id="listHorarios"
-                              style="-fx-pref-height: 300; -fx-border-color: #C3DFE3; -fx-border-radius: 8; -fx-background-radius: 8;"
-                              styleClass="turnos-list"/>
-                </VBox>
+                <!-- Horarios -->
+                <GridPane hgap="20" vgap="12" style="-fx-padding: 10 0 0 0;">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="180"/>
+                        <ColumnConstraints prefWidth="350"/>
+                    </columnConstraints>
 
-                <!-- Panel derecho: Detalle del turno -->
-                <VBox fx:id="panelDetalleTurno" spacing="15" style="-fx-pref-width: 300;" visible="false">
-                    <Label text="Detalle del Turno:"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+                    <!-- Turno Mañana -->
+                    <Label text="🌅 Turno Mañana:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
+                    <Label fx:id="lblTurnoManana" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
-                    <VBox styleClass="turnos-container" spacing="10" style="-fx-pref-width: 280;">
-                        <Label fx:id="lblFechaSeleccionada" text="Fecha:"
-                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
-                        <Label fx:id="lblHoraSeleccionada" text="Hora:"
-                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
-                        <Label fx:id="lblDuracion" text="Duración:"
-                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
-                        <Label fx:id="lblUbicacion" text="Ubicación:"
-                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                    <!-- Turno Tarde -->
+                    <Label text="🌆 Turno Tarde:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
+                    <Label fx:id="lblTurnoTarde" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
-                        <Button text="Confirmar Turno"
-                                styleClass="cosmos-button"
-                                style="-fx-pref-width: 200; -fx-alignment: center;"/>
-                    </VBox>
-                </VBox>
+                    <!-- Duración Sesión -->
+                    <Label text="⏱️ Duración sesión:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
+                    <Label fx:id="lblDuracionSesion" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="2"
+                           style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
-            </HBox>
+                    <!-- Tiempo Descanso -->
+                    <Label text="☕ Tiempo descanso:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
+                    <Label fx:id="lblTiempoDescanso" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="3"
+                           style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                </GridPane>
+
+                <Separator style="-fx-background-color: #C3DFE3;"/>
+
+                <!-- Última actualización -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="📝 Última actualización:" style="-fx-font-size: 13px; -fx-text-fill: #6B7280; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblUltimaActualizacion" text="Cargando..." style="-fx-font-size: 13px; -fx-text-fill: #6B7280; -fx-font-style: italic;"/>
+                </HBox>
+            </VBox>
 
             <!-- Información adicional -->
-            <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: rgba(127, 187, 178, 0.1); -fx-background-radius: 10;">
-                <Label text="💡 Información" style="-fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
-                <Label text="Seleccione una fecha para ver los horarios disponibles"
+            <VBox spacing="12" alignment="CENTER" style="-fx-padding: 25; -fx-background-color: rgba(127, 187, 178, 0.1); -fx-background-radius: 10; -fx-max-width: 700;">
+                <Label text="💡 Información" style="-fx-font-weight: bold; -fx-text-fill: #7FBBB2; -fx-font-size: 15px;"/>
+                <Label text="Esta es la configuración horaria actual del consultorio"
                        style="-fx-text-fill: #666666; -fx-font-size: 13px;"/>
-                <Label text="Luego elija un horario para ver los detalles del turno"
+                <Label text="Para modificarla, haga clic en el botón 'Configuración' en la parte superior"
                        style="-fx-text-fill: #666666; -fx-font-size: 13px;"/>
             </VBox>
 

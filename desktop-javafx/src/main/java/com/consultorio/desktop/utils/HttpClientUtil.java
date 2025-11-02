@@ -245,6 +245,10 @@ public class HttpClientUtil {
                 config.put("duracionSesion", parseInt(extractValue(obj, "duracionSesion")));
                 config.put("tiempoDescanso", parseInt(extractValue(obj, "tiempoDescanso")));
 
+                // Agregar campos de auditoría
+                config.put("fechaActualizacion", extractValue(obj, "fechaActualizacion"));
+                config.put("actualizadoPor", extractValue(obj, "actualizadoPor"));
+
                 configuraciones.add(config);
             }
         } catch (Exception e) {

@@ -113,26 +113,26 @@ public class ConfiguracionHorariosController {
             if (configuracionesActuales != null && !configuracionesActuales.isEmpty()) {
                 Map<String, Object> primeraConfig = configuracionesActuales.get(0);
 
-                if (primeraConfig.containsKey("horaInicioManana") && primeraConfig.get("horaInicioManana") != null) {
-                    LocalTime time = LocalTime.parse((String) primeraConfig.get("horaInicioManana"));
+                if (primeraConfig.containsKey("inicioManana") && primeraConfig.get("inicioManana") != null) {
+                    LocalTime time = LocalTime.parse((String) primeraConfig.get("inicioManana"));
                     spMananaInicioHora.getValueFactory().setValue(time.getHour());
                     spMananaInicioMinuto.getValueFactory().setValue(time.getMinute());
                 }
 
-                if (primeraConfig.containsKey("horaFinManana") && primeraConfig.get("horaFinManana") != null) {
-                    LocalTime time = LocalTime.parse((String) primeraConfig.get("horaFinManana"));
+                if (primeraConfig.containsKey("finManana") && primeraConfig.get("finManana") != null) {
+                    LocalTime time = LocalTime.parse((String) primeraConfig.get("finManana"));
                     spMananaFinHora.getValueFactory().setValue(time.getHour());
                     spMananaFinMinuto.getValueFactory().setValue(time.getMinute());
                 }
 
-                if (primeraConfig.containsKey("horaInicioTarde") && primeraConfig.get("horaInicioTarde") != null) {
-                    LocalTime time = LocalTime.parse((String) primeraConfig.get("horaInicioTarde"));
+                if (primeraConfig.containsKey("inicioTarde") && primeraConfig.get("inicioTarde") != null) {
+                    LocalTime time = LocalTime.parse((String) primeraConfig.get("inicioTarde"));
                     spTardeInicioHora.getValueFactory().setValue(time.getHour());
                     spTardeInicioMinuto.getValueFactory().setValue(time.getMinute());
                 }
 
-                if (primeraConfig.containsKey("horaFinTarde") && primeraConfig.get("horaFinTarde") != null) {
-                    LocalTime time = LocalTime.parse((String) primeraConfig.get("horaFinTarde"));
+                if (primeraConfig.containsKey("finTarde") && primeraConfig.get("finTarde") != null) {
+                    LocalTime time = LocalTime.parse((String) primeraConfig.get("finTarde"));
                     spTardeFinHora.getValueFactory().setValue(time.getHour());
                     spTardeFinMinuto.getValueFactory().setValue(time.getMinute());
                 }
@@ -212,10 +212,10 @@ public class ConfiguracionHorariosController {
                 config.put("activo", checkboxes[i].isSelected());
                 config.put("turnoManana", cbManana.isSelected());
                 config.put("turnoTarde", cbTarde.isSelected());
-                config.put("horaInicioManana", horaInicioManana.toString());
-                config.put("horaFinManana", horaFinManana.toString());
-                config.put("horaInicioTarde", horaInicioTarde.toString());
-                config.put("horaFinTarde", horaFinTarde.toString());
+                config.put("inicioManana", horaInicioManana.toString());  // ← Cambiado de horaInicioManana
+                config.put("finManana", horaFinManana.toString());        // ← Cambiado de horaFinManana
+                config.put("inicioTarde", horaInicioTarde.toString());    // ← Cambiado de horaInicioTarde
+                config.put("finTarde", horaFinTarde.toString());          // ← Cambiado de horaFinTarde
                 config.put("duracionSesion", duracionSesion);
                 config.put("tiempoDescanso", tiempoDescanso);
                 configuraciones.add(config);
