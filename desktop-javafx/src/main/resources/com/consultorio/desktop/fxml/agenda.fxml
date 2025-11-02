@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.*?>
+        <?import javafx.scene.layout.*?>
+        <?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.consultorio.desktop.controllers.AgendaController"
+            stylesheets="@styles.css">
+
+    <!-- TOP: Header con usuario y botón configuración -->
+    <top>
+        <HBox styleClass="dashboard-header" spacing="20" alignment="CENTER_RIGHT">
+            <Label fx:id="lblUsuario" text="Usuario" styleClass="user-welcome"/>
+            <Button text="Configuración" onAction="#handleConfiguracion" styleClass="header-button"/>
+            <Button text="Volver al Inicio" onAction="#handleVolverDashboard" styleClass="header-button"/>
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <!-- CENTER: Contenido principal de la agenda -->
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+
+            <!-- Título -->
+            <Label text="Agenda Mensual" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+
+            <!-- Selector de fecha -->
+            <HBox spacing="15" alignment="CENTER">
+                <Label text="Seleccione una fecha:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                <DatePicker fx:id="datePicker" styleClass="cosmos-text-field"
+                            style="-fx-font-size: 14px; -fx-pref-width: 200;"/>
+            </HBox>
+
+            <!-- Contenedor principal: Calendario + Horarios -->
+            <HBox spacing="30" alignment="TOP_CENTER">
+
+                <!-- Panel izquierdo: Horarios disponibles -->
+                <VBox spacing="15" style="-fx-pref-width: 300;">
+                    <Label text="Horarios Disponibles:"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+
+                    <ListView fx:id="listHorarios"
+                              style="-fx-pref-height: 300; -fx-border-color: #C3DFE3; -fx-border-radius: 8; -fx-background-radius: 8;"
+                              styleClass="turnos-list"/>
+                </VBox>
+
+                <!-- Panel derecho: Detalle del turno -->
+                <VBox fx:id="panelDetalleTurno" spacing="15" style="-fx-pref-width: 300;" visible="false">
+                    <Label text="Detalle del Turno:"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+
+                    <VBox styleClass="turnos-container" spacing="10" style="-fx-pref-width: 280;">
+                        <Label fx:id="lblFechaSeleccionada" text="Fecha:"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        <Label fx:id="lblHoraSeleccionada" text="Hora:"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        <Label fx:id="lblDuracion" text="Duración:"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        <Label fx:id="lblUbicacion" text="Ubicación:"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+
+                        <Button text="Confirmar Turno"
+                                styleClass="cosmos-button"
+                                style="-fx-pref-width: 200; -fx-alignment: center;"/>
+                    </VBox>
+                </VBox>
+
+            </HBox>
+
+            <!-- Información adicional -->
+            <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: rgba(127, 187, 178, 0.1); -fx-background-radius: 10;">
+                <Label text="💡 Información" style="-fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+                <Label text="Seleccione una fecha para ver los horarios disponibles"
+                       style="-fx-text-fill: #666666; -fx-font-size: 13px;"/>
+                <Label text="Luego elija un horario para ver los detalles del turno"
+                       style="-fx-text-fill: #666666; -fx-font-size: 13px;"/>
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

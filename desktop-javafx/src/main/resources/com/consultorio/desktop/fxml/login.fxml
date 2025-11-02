@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.LoginController"
+      styleClass="cosmos-container">
+
+    <!-- Título principal más arriba y más pequeño -->
+    <Label text="Consultorio Psicopedagógico"
+           styleClass="cosmos-title-sub"/>
+
+    <!-- Nombre más abajo y más grande -->
+    <Label text="Cosmos"
+           styleClass="cosmos-title-main"/>
+
+    <Label text="Iniciar Sesión" styleClass="cosmos-login-label"/>
+
+    <TextField fx:id="usernameField"
+               promptText="Usuario (DNI)"
+               styleClass="cosmos-text-field"
+               prefWidth="250"/>
+
+    <PasswordField fx:id="passwordField"
+                   promptText="Contraseña"
+                   styleClass="cosmos-text-field"
+                   prefWidth="250"/>
+
+    <Button text="Ingresar"
+            onAction="#handleLogin"
+            styleClass="cosmos-button"
+            prefWidth="250"/>
+
+    <!-- Botón SOLO para registrar secretarias -->
+    <Button text="Registrar Secretaria"
+            onAction="#handleRegistro"
+            styleClass="cosmos-button"
+            prefWidth="250"/>
+
+    <!-- Enlace para recuperar contraseña -->
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="¿Olvidaste tu contraseña?" styleClass="cosmos-small-text"/>
+        <Button text="Recuperar aquí"
+                onAction="#handleRecuperarPassword"
+                styleClass="cosmos-link-button"/>
+    </HBox>
+
+    <padding>
+        <Insets bottom="30.0" left="20.0" right="20.0" top="30.0"/>
+    </padding>
+</VBox>

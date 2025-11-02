@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.consultorio.desktop.controllers.DashboardController"
+            styleClass="cosmos-container">
+
+    <!-- TOP: Header con FECHA a la izquierda y bienvenida + botones a la derecha -->
+    <top>
+        <HBox styleClass="dashboard-header" spacing="20" alignment="CENTER_LEFT">
+            <!-- FECHA A LA IZQUIERDA -->
+            <Label fx:id="lblFechaActual" text="Fecha" styleClass="user-welcome"/>
+
+            <!-- Espacio flexible -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- BIENVENIDA AL LADO DE LOS BOTONES -->
+            <Label fx:id="lblUsuario" text="Usuario" styleClass="user-welcome"/>
+
+            <!-- Botones -->
+            <Button text="Mi Perfil" onAction="#handleMiPerfil" styleClass="header-button"/>
+            <Button text="Cerrar Sesión" onAction="#handleCerrarSesion" styleClass="header-button"/>
+
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="20"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <!-- LEFT: Menú lateral -->
+    <left>
+        <VBox styleClass="sidebar" spacing="15" prefWidth="220">
+            <padding>
+                <Insets top="20" left="20" right="20" bottom="30"/>
+            </padding>
+
+            <!-- LOGO ARRIBA DE LOS BOTONES -->
+            <VBox alignment="CENTER" spacing="10">
+                <ImageView fx:id="imgLogo" fitWidth="120" fitHeight="120" preserveRatio="true"
+                           style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 4);"/>
+                <Label text="Consultorio Cosmos" style="-fx-text-fill: #2C3E50; -fx-font-weight: bold; -fx-font-size: 14;"/>
+            </VBox>
+
+            <!-- Botones del menú DEBAJO del logo -->
+            <VBox spacing="8" alignment="CENTER_LEFT">
+                <Button text="📅 Agenda" onAction="#handleAgenda" styleClass="menu-button" prefWidth="180"/>
+                <Button text="🔄 Turnos" onAction="#handleTurnos" styleClass="menu-button" prefWidth="180"/>
+                <Button text="👥 Pacientes" onAction="#handlePacientes" styleClass="menu-button" prefWidth="180"/>
+                <Button text="📝 Tareas" onAction="#handleTareas" styleClass="menu-button" prefWidth="180"/>
+                <Button text="💰 Pagos" onAction="#handlePagos" styleClass="menu-button" prefWidth="180" fx:id="btnPagos"/>
+                <Button text="📊 Estadísticas" onAction="#handleEstadisticas" styleClass="menu-button" prefWidth="180" fx:id="btnEstadisticas"/>
+                <Button text="👤 Usuarios" onAction="#handleGestionUsuarios" styleClass="menu-button" prefWidth="180" fx:id="btnGestionUsuarios"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- CENTER: Contenido principal -->
+    <center>
+        <StackPane styleClass="dashboard-center">
+            <ImageView fx:id="imgLogoFondo" fitWidth="300" fitHeight="300" preserveRatio="true"
+                       opacity="0.08" styleClass="background-logo"/>
+
+            <VBox alignment="CENTER" spacing="25">
+                <!-- Títulos principales -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Label text="Cosmos" styleClass="dashboard-title"/>
+                    <Label text="Consultorio Psicopedagógico" styleClass="dashboard-subtitle"/>
+                </VBox>
+
+                <!-- Sección de PRÓXIMOS turnos - MÁS GRANDE Y SIN BOTONES REDUNDANTES -->
+                <VBox styleClass="turnos-container" spacing="15" alignment="CENTER">
+                    <Label fx:id="lblProximosTurnos" text="Próximos Turnos" styleClass="turnos-title"/>
+                    <ListView fx:id="listTurnos" styleClass="turnos-list" prefWidth="550" prefHeight="350"/>
+                    <Label fx:id="lblNoTurnos" text="No hay próximos turnos programados"
+                           styleClass="empty-message"/>
+
+                    <!-- SOLO este botón queda - ELIMINADOS LOS OTROS TRES -->
+                    <Button text="📋 Ver Todos los Turnos" onAction="#handleVerTodosTurnos"
+                            styleClass="quick-action-button" prefWidth="200"/>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>

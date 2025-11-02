@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.ConfiguracionHorariosController"
+      spacing="15" alignment="TOP_CENTER"
+      style="-fx-background-color: #F8FAFC; -fx-padding: 20; -fx-min-width: 700; -fx-pref-height: 600;">
+
+    <!-- Título -->
+    <Label text="Configuración de Horarios de Trabajo"
+           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2; -fx-padding: 0 0 10 0;"/>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                style="-fx-background: transparent; -fx-border-color: transparent; -fx-pref-height: 450;">
+        <content>
+            <VBox spacing="20" style="-fx-padding: 10;">
+
+                <!-- Sección 1: Días de Trabajo -->
+                <VBox spacing="12" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="📅" style="-fx-font-size: 16px;"/>
+                        <Label text="Días de Trabajo"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                    </HBox>
+
+                    <Label text="Seleccione los días en los que atiende:"
+                           style="-fx-text-fill: #6B7280; -fx-font-size: 13px; -fx-padding: 0 0 10 0;"/>
+
+                    <GridPane hgap="20" vgap="12">
+                        <columnConstraints>
+                            <ColumnConstraints prefWidth="120"/>
+                            <ColumnConstraints prefWidth="120"/>
+                            <ColumnConstraints prefWidth="120"/>
+                            <ColumnConstraints prefWidth="120"/>
+                        </columnConstraints>
+
+                        <!-- Fila 1 -->
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <CheckBox fx:id="cbLunes" styleClass="cosmos-checkbox"/>
+                            <Label text="Lunes" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <CheckBox fx:id="cbMartes" styleClass="cosmos-checkbox"/>
+                            <Label text="Martes" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <CheckBox fx:id="cbMiercoles" styleClass="cosmos-checkbox"/>
+                            <Label text="Miércoles" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <CheckBox fx:id="cbJueves" styleClass="cosmos-checkbox"/>
+                            <Label text="Jueves" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+
+                        <!-- Fila 2 -->
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <CheckBox fx:id="cbViernes" styleClass="cosmos-checkbox"/>
+                            <Label text="Viernes" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <CheckBox fx:id="cbSabado" styleClass="cosmos-checkbox"/>
+                            <Label text="Sábado" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <CheckBox fx:id="cbDomingo" styleClass="cosmos-checkbox"/>
+                            <Label text="Domingo" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        </HBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Sección 2: Horarios de Trabajo -->
+                <VBox spacing="12" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="⏰" style="-fx-font-size: 16px;"/>
+                        <Label text="Horarios de Trabajo"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                    </HBox>
+
+                    <Label text="Configure los horarios de atención:"
+                           style="-fx-text-fill: #6B7280; -fx-font-size: 13px; -fx-padding: 0 0 10 0;"/>
+
+                    <!-- Turno Mañana -->
+                    <VBox spacing="8" style="-fx-padding: 10; -fx-background-color: #F8FAFC; -fx-background-radius: 8;">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="cbManana" text="Turno Mañana"
+                                      style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                            <Label text="(6:00 - 12:00)" style="-fx-text-fill: #2C3E50; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <HBox spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 5 0 0 25;">
+                            <VBox spacing="5" alignment="CENTER">
+                                <Label text="Horario Inicio:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2C3E50;"/>
+                                <HBox spacing="3" alignment="CENTER">
+                                    <Spinner fx:id="spMananaInicioHora" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text=":" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                                    <Spinner fx:id="spMananaInicioMinuto" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text="hs" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #2C3E50;"/>
+                                </HBox>
+                            </VBox>
+
+                            <Region prefWidth="20"/>
+
+                            <VBox spacing="5" alignment="CENTER">
+                                <Label text="Horario Fin:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2C3E50;"/>
+                                <HBox spacing="3" alignment="CENTER">
+                                    <Spinner fx:id="spMananaFinHora" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text=":" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                                    <Spinner fx:id="spMananaFinMinuto" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text="hs" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #2C3E50;"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Separador -->
+                    <Region prefHeight="15"/>
+
+                    <!-- Turno Tarde -->
+                    <VBox spacing="8" style="-fx-padding: 10; -fx-background-color: #F8FAFC; -fx-background-radius: 8;">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="cbTarde" text="Turno Tarde"
+                                      style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                            <Label text="(13:00 - 20:00)" style="-fx-text-fill: #2C3E50; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <HBox spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 5 0 0 25;">
+                            <VBox spacing="5" alignment="CENTER">
+                                <Label text="Horario Inicio:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2C3E50;"/>
+                                <HBox spacing="3" alignment="CENTER">
+                                    <Spinner fx:id="spTardeInicioHora" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text=":" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                                    <Spinner fx:id="spTardeInicioMinuto" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text="hs" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #2C3E50;"/>
+                                </HBox>
+                            </VBox>
+
+                            <Region prefWidth="20"/>
+
+                            <VBox spacing="5" alignment="CENTER">
+                                <Label text="Horario Fin:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2C3E50;"/>
+                                <HBox spacing="3" alignment="CENTER">
+                                    <Spinner fx:id="spTardeFinHora" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text=":" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                                    <Spinner fx:id="spTardeFinMinuto" prefWidth="60" styleClass="cosmos-spinner"/>
+                                    <Label text="hs" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #2C3E50;"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Sección 3: Configuración de Sesiones -->
+                <VBox spacing="12" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="⚙️" style="-fx-font-size: 16px;"/>
+                        <Label text="Configuración de Sesiones"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                    </HBox>
+
+                    <Label text="Configure la duración de las sesiones:"
+                           style="-fx-text-fill: #6B7280; -fx-font-size: 13px; -fx-padding: 0 0 15 0;"/>
+
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints prefWidth="250"/>
+                            <ColumnConstraints prefWidth="100"/>
+                            <ColumnConstraints prefWidth="80"/>
+                        </columnConstraints>
+
+                        <!-- Duración de Sesión -->
+                        <Label text="Duración de cada sesión:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Spinner fx:id="spDuracionSesion" prefWidth="80" styleClass="cosmos-spinner"/>
+                        </HBox>
+                        <Label text="minutos"
+                               GridPane.columnIndex="2" GridPane.rowIndex="0"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+
+                        <!-- Tiempo de Descanso -->
+                        <Label text="Tiempo de descanso entre pacientes:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Spinner fx:id="spTiempoDescanso" prefWidth="80" styleClass="cosmos-spinner"/>
+                        </HBox>
+                        <Label text="minutos"
+                               GridPane.columnIndex="2" GridPane.rowIndex="1"
+                               style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+                    </GridPane>
+                </VBox>
+
+                <!-- Información -->
+                <VBox spacing="8" style="-fx-background-color: #E2F2EF; -fx-background-radius: 8; -fx-padding: 15; -fx-border-color: #7FBBB2; -fx-border-width: 1;">
+                    <Label text="💡 Información" style="-fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+                    <Label text="• Los horarios disponibles se generarán automáticamente según esta configuración"
+                           style="-fx-text-fill: #2C3E50; -fx-font-size: 12px;"/>
+                    <Label text="• Los turnos se calcularán considerando duración de sesión y tiempo de descanso"
+                           style="-fx-text-fill: #2C3E50; -fx-font-size: 12px;"/>
+                    <Label text="• La mañana va de 6:00 a 12:00 - La tarde de 13:00 a 20:00"
+                           style="-fx-text-fill: #2C3E50; -fx-font-size: 12px;"/>
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <!-- Botones FIJOS en la parte inferior -->
+    <HBox spacing="20" alignment="CENTER" style="-fx-padding: 15 0 0 0;">
+        <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancelar"
+                styleClass="cosmos-button"
+                style="-fx-background-color: #6B7280; -fx-pref-width: 140; -fx-font-weight: bold;"/>
+        <Button fx:id="btnGuardar" text="Guardar Configuración" onAction="#handleGuardar"
+                styleClass="cosmos-button"
+                style="-fx-pref-width: 180; -fx-font-weight: bold;"/>
+    </HBox>
+
+</VBox>
