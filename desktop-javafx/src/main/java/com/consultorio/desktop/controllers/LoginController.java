@@ -134,16 +134,26 @@ public class LoginController {
 
                 // VERIFICAR SI EL MAIL ESTÁ VALIDADO
                 if (Boolean.TRUE.equals(emailValidado)) {
-                    // Email validado - puede recuperar contraseña
-                    mostrarAlertaInfo("Recuperación de Contraseña",
-                            "Mensaje enviado correctamente",
-                            "Se ha enviado un enlace de recuperación a:\n\n" +
-                                    "- " + nombre + " " + apellido + "\n" +
-                                    "- " + email + "\n" +
-                                    "- DNI: " + dni + "\n\n" +
-                                    " Revise su correo electrónico para las instrucciones de recuperación de su contraseña.");
-
+                    // Email validado - ENVIAR RECORDATORIO DE CONTRASEÑA
                     System.out.println("DNI validado - Email verificado: " + email);
+                    System.out.println("Enviando recordatorio de contraseña...");
+
+                    boolean emailEnviado = HttpClientUtil.enviarRecordatorioPassword(dni);
+
+                    if (emailEnviado) {
+                        mostrarAlertaInfo("Recuperación de Contraseña",
+                                "Email enviado correctamente",
+                                "Se ha enviado un recordatorio de contraseña a:\n\n" +
+                                        "- " + nombre + " " + apellido + "\n" +
+                                        "- " + email + "\n" +
+                                        "- DNI: " + dni + "\n\n" +
+                                        "Revise su correo electrónico para ver su contraseña.");
+                    } else {
+                        mostrarAlertaError("Error",
+                                "No se pudo enviar el email",
+                                "Hubo un problema al enviar el recordatorio de contraseña.\n\n" +
+                                        "Por favor, intente nuevamente más tarde o contacte al administrador.");
+                    }
 
                 } else {
                     // Email NO validado - debe validarlo primero

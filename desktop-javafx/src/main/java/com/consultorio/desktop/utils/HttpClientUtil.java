@@ -364,6 +364,43 @@ public class HttpClientUtil {
         }
     }
 
+    /**
+     * Enviar recordatorio de contraseña por email
+     * @param dni DNI del usuario
+     * @return true si se envió correctamente, false en caso contrario
+     */
+    public static boolean enviarRecordatorioPassword(String dni) {
+        try {
+            System.out.println("📧 Enviando recordatorio de contraseña para DNI: " + dni);
+
+            String jsonBody = "{\"dni\":\"" + dni + "\"}";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/usuarios/recordatorio-password"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("📨 Response status: " + response.statusCode());
+            System.out.println("📨 Response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Recordatorio de contraseña enviado exitosamente");
+                return true;
+            } else {
+                System.err.println("❌ Error enviando recordatorio: " + response.body());
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("💥 Error en enviarRecordatorioPassword: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     public static Map<String, Object> sendPost(String endpoint, Object requestBody) throws Exception {
         String jsonBody = createJsonFromMap((Map<String, Object>) requestBody);
 
