@@ -183,48 +183,78 @@ public class RegistroPacienteController {
     private boolean validarCampos() {
         StringBuilder errores = new StringBuilder();
 
-        if (txtNombre.getText().trim().isEmpty()) {
+        String nombre = txtNombre.getText().trim();
+        String apellido = txtApellido.getText().trim();
+        String dni = txtDni.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String email = txtEmail.getText().trim();
+
+        // Validar nombre
+        if (nombre.isEmpty()) {
             errores.append("- El nombre es obligatorio\n");
+        } else if (!nombre.matches("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*$")) {
+            errores.append("- El nombre debe comenzar con mayúscula y contener solo letras (Ej: María)\n");
         }
 
-        if (txtApellido.getText().trim().isEmpty()) {
+        // Validar apellido
+        if (apellido.isEmpty()) {
             errores.append("- El apellido es obligatorio\n");
+        } else if (!apellido.matches("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*$")) {
+            errores.append("- El apellido debe comenzar con mayúscula y contener solo letras (Ej: González)\n");
         }
 
-        if (txtDni.getText().trim().isEmpty()) {
+        // Validar DNI
+        if (dni.isEmpty()) {
             errores.append("- El DNI es obligatorio\n");
+        } else if (!dni.matches("\\d+")) {
+            errores.append("- El DNI debe contener solo números\n");
         }
 
-        if (txtTelefono.getText().trim().isEmpty()) {
+        // Validar teléfono
+        if (telefono.isEmpty()) {
             errores.append("- El teléfono es obligatorio\n");
+        } else if (!telefono.matches("\\d{10,14}")) {
+            errores.append("- El teléfono debe tener entre 10 y 14 dígitos (solo números, Ej: 1123456789)\n");
         }
 
-        if (txtEmail.getText().trim().isEmpty()) {
+        // Validar email
+        if (email.isEmpty()) {
             errores.append("- El email es obligatorio\n");
-        } else if (!txtEmail.getText().contains("@")) {
-            errores.append("- El email no es válido\n");
+        } else if (!email.contains("@") || !email.endsWith(".com")) {
+            errores.append("- El email debe contener @ y terminar en .com (Ej: usuario@ejemplo.com)\n");
+        } else if (!validarEmail(email)) {
+            errores.append("- El formato del email no es válido (Ej: usuario@ejemplo.com)\n");
         }
 
+        // Validar fecha de nacimiento
         if (dpFechaNacimiento.getValue() == null) {
             errores.append("- La fecha de nacimiento es obligatoria\n");
         } else if (dpFechaNacimiento.getValue().isAfter(LocalDate.now())) {
             errores.append("- La fecha de nacimiento no puede ser futura\n");
         }
 
+        // Validar nivel educativo
         if (cmbNivelEducativo.getValue() == null) {
             errores.append("- El nivel educativo es obligatorio\n");
         }
 
+        // Validar condición
         if (cmbCondicion.getValue() == null) {
             errores.append("- La condición es obligatoria\n");
         }
 
         if (errores.length() > 0) {
-            mostrarAdvertencia("Campos Incompletos", "Por favor complete los siguientes campos:\n\n" + errores.toString());
+            mostrarAdvertencia("Campos incompletos o inválidos", "Por favor corrija los siguientes errores:\n\n" + errores.toString());
             return false;
         }
 
         return true;
+    }
+
+    private boolean validarEmail(String email) {
+        // Validar que tenga formato correcto y termine en .com
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
+        return email.matches(regex);
     }
 
     @FXML

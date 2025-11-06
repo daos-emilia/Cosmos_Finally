@@ -3,6 +3,7 @@ package com.consultorio.desktop.utils;
 import com.consultorio.desktop.models.Turno;
 import com.consultorio.desktop.models.Paciente;
 import com.consultorio.desktop.models.InformePaciente;
+import com.consultorio.desktop.models.Usuario;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -21,8 +22,8 @@ import java.util.Map;
 
 public class HttpClientUtil {
 
-    //private static final String BASE_URL = "http://localhost:8080/api";
-    private static final String BASE_URL = "https://consultorio-cosmos-backend.onrender.com/api";
+    private static final String BASE_URL = "http://localhost:8080/api";
+    //private static final String BASE_URL = "https://consultorio-cosmos-backend.onrender.com/api";
 
     private static final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
@@ -1024,5 +1025,275 @@ public class HttpClientUtil {
                     .replace("\n", "\\n")
                     .replace("\r", "\\r")
                     .replace("\t", "\\t");
+    }
+
+    // ==================== MÉTODOS PARA USUARIOS ====================
+
+    /**
+     * Obtener todos los usuarios (excepto ADMIN)
+     */
+    public static List<com.consultorio.desktop.models.Usuario> obtenerUsuarios() {
+        try {
+            String url = BASE_URL + "/usuarios";
+            System.out.println("🔄 Obteniendo usuarios del backend...");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                List<com.consultorio.desktop.models.Usuario> usuarios = parseUsuariosFromJson(response.body());
+                System.out.println("✅ Usuarios obtenidos: " + usuarios.size());
+                return usuarios;
+            } else {
+                System.out.println("❌ Error obteniendo usuarios: " + response.statusCode());
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error obteniendo usuarios: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Obtener usuario por ID
+     */
+    public static com.consultorio.desktop.models.Usuario obtenerUsuarioPorId(Long id) {
+        try {
+            String url = BASE_URL + "/usuarios/" + id;
+            System.out.println("🔄 Obteniendo usuario ID: " + id);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                com.consultorio.desktop.models.Usuario usuario = parseUsuarioFromJson(response.body());
+                System.out.println("✅ Usuario obtenido: " + usuario.getNombreCompleto());
+                return usuario;
+            } else {
+                System.out.println("❌ Error obteniendo usuario: " + response.statusCode());
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error obteniendo usuario: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Crear nuevo usuario
+     */
+    public static boolean crearUsuario(com.consultorio.desktop.models.Usuario usuario, String usuarioCreador) {
+        try {
+            String url = BASE_URL + "/usuarios";
+            System.out.println("🔄 Creando usuario: " + usuario.getNombreCompleto());
+
+            String jsonBody = buildUsuarioJson(usuario);
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json");
+
+            if (usuarioCreador != null && !usuarioCreador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioCreador);
+            }
+
+            HttpRequest request = requestBuilder
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200 || response.statusCode() == 201) {
+                System.out.println("✅ Usuario creado exitosamente");
+                return true;
+            } else {
+                System.out.println("❌ Error creando usuario: " + response.statusCode());
+                System.out.println("Response: " + response.body());
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error creando usuario: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Actualizar usuario existente
+     */
+    public static boolean actualizarUsuario(com.consultorio.desktop.models.Usuario usuario, String usuarioModificador) {
+        try {
+            String url = BASE_URL + "/usuarios/" + usuario.getId();
+            System.out.println("🔄 Actualizando usuario: " + usuario.getNombreCompleto());
+
+            String jsonBody = buildUsuarioJson(usuario);
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json");
+
+            if (usuarioModificador != null && !usuarioModificador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioModificador);
+            }
+
+            HttpRequest request = requestBuilder
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Usuario actualizado exitosamente");
+                return true;
+            } else {
+                System.out.println("❌ Error actualizando usuario: " + response.statusCode());
+                System.out.println("Response: " + response.body());
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error actualizando usuario: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Cambiar estado de usuario (activar/desactivar)
+     */
+    public static boolean cambiarEstadoUsuario(Long id, boolean activo, String usuarioModificador) {
+        try {
+            String url = BASE_URL + "/usuarios/" + id + "/estado?activo=" + activo;
+            System.out.println("🔄 Cambiando estado de usuario ID: " + id + " a " + (activo ? "activo" : "inactivo"));
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json");
+
+            if (usuarioModificador != null && !usuarioModificador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioModificador);
+            }
+
+            HttpRequest request = requestBuilder
+                    .PUT(HttpRequest.BodyPublishers.ofString(""))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Estado de usuario cambiado exitosamente");
+                return true;
+            } else {
+                System.out.println("❌ Error cambiando estado: " + response.statusCode());
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error cambiando estado: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Parsear lista de usuarios desde JSON
+     */
+    private static List<com.consultorio.desktop.models.Usuario> parseUsuariosFromJson(String json) {
+        List<com.consultorio.desktop.models.Usuario> usuarios = new ArrayList<>();
+
+        try {
+            json = json.trim();
+            if (!json.startsWith("[")) return usuarios;
+
+            json = json.substring(1, json.length() - 1);
+            List<String> objetos = splitJsonArray(json);
+
+            for (String obj : objetos) {
+                com.consultorio.desktop.models.Usuario usuario = parseUsuarioFromJson(obj);
+                if (usuario != null) {
+                    usuarios.add(usuario);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando usuarios: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return usuarios;
+    }
+
+    /**
+     * Parsear un usuario desde JSON
+     */
+    private static com.consultorio.desktop.models.Usuario parseUsuarioFromJson(String json) {
+        try {
+            com.consultorio.desktop.models.Usuario usuario = new com.consultorio.desktop.models.Usuario();
+
+            usuario.setId(parseLong(extractValue(json, "id")));
+            usuario.setDni(extractValue(json, "dni"));
+            usuario.setPassword(extractValue(json, "password"));
+            usuario.setNombre(extractValue(json, "nombre"));
+            usuario.setApellido(extractValue(json, "apellido"));
+            usuario.setTelefono(extractValue(json, "telefono"));
+            usuario.setEmail(extractValue(json, "email"));
+            usuario.setEmailValidado(parseBoolean(extractValue(json, "emailValidado")));
+            usuario.setTipo(extractValue(json, "tipo"));
+            usuario.setMatricula(extractValue(json, "matricula"));
+            usuario.setActivo(parseBoolean(extractValue(json, "activo")));
+
+            // Campos de auditoría
+            usuario.setFechaCreacion(extractValue(json, "fechaCreacion"));
+            usuario.setFechaActualizacion(extractValue(json, "fechaActualizacion"));
+            usuario.setCreadoPor(extractValue(json, "creadoPor"));
+            usuario.setActualizadoPor(extractValue(json, "actualizadoPor"));
+
+            return usuario;
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando usuario: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Construir JSON para crear/actualizar usuario
+     */
+    private static String buildUsuarioJson(com.consultorio.desktop.models.Usuario usuario) {
+        StringBuilder json = new StringBuilder("{");
+
+        if (usuario.getId() != null) {
+            json.append("\"id\":").append(usuario.getId()).append(",");
+        }
+
+        json.append("\"dni\":\"").append(escapeJson(usuario.getDni())).append("\",");
+        json.append("\"password\":\"").append(escapeJson(usuario.getPassword())).append("\",");
+        json.append("\"nombre\":\"").append(escapeJson(usuario.getNombre())).append("\",");
+        json.append("\"apellido\":\"").append(escapeJson(usuario.getApellido())).append("\",");
+        json.append("\"telefono\":\"").append(escapeJson(usuario.getTelefono())).append("\",");
+        json.append("\"email\":\"").append(escapeJson(usuario.getEmail())).append("\",");
+        json.append("\"emailValidado\":").append(usuario.getEmailValidado() != null ? usuario.getEmailValidado() : false).append(",");
+        json.append("\"tipo\":\"").append(usuario.getTipo()).append("\",");
+
+        if (usuario.getMatricula() != null && !usuario.getMatricula().isEmpty()) {
+            json.append("\"matricula\":\"").append(escapeJson(usuario.getMatricula())).append("\",");
+        } else {
+            json.append("\"matricula\":null,");
+        }
+
+        json.append("\"activo\":").append(usuario.getActivo() != null ? usuario.getActivo() : true);
+
+        json.append("}");
+
+        return json.toString();
     }
 }

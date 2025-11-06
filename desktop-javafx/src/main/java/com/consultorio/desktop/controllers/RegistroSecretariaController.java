@@ -20,16 +20,9 @@ public class RegistroSecretariaController {
 
     private Stage parentStage;
 
-    // Método para recibir el stage padre y configurar la ventana
+    // Método para recibir el stage padre
     public void setParentStage(Stage parentStage) {
         this.parentStage = parentStage;
-
-        // Configurar la ventana actual una vez que tenemos la referencia
-        Stage currentStage = (Stage) dniField.getScene().getWindow();
-        currentStage.setResizable(false);
-
-        // Heredar el estado de maximizado del padre
-        currentStage.setMaximized(parentStage.isMaximized());
     }
 
     @FXML
@@ -54,19 +47,44 @@ public class RegistroSecretariaController {
             return;
         }
 
+        // Validar DNI (solo números)
         if (!dni.matches("\\d+")) {
             mostrarAlertaError("Error", "DNI inválido", "El DNI debe contener solo números.");
             return;
         }
 
-        if (!telefono.matches("\\d+")) {
-            mostrarAlertaError("Error", "Teléfono inválido", "El teléfono debe contener solo números.");
+        // Validar que nombre comience con mayúscula
+        if (!nombre.matches("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*$")) {
+            mostrarAlertaError("Error", "Nombre inválido",
+                "El nombre debe comenzar con mayúscula y contener solo letras.\nEjemplo: María");
             return;
         }
 
-        // Validación básica de email
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            mostrarAlertaError("Error", "Email inválido", "Por favor, ingrese un email válido.");
+        // Validar que apellido comience con mayúscula
+        if (!apellido.matches("^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*$")) {
+            mostrarAlertaError("Error", "Apellido inválido",
+                "El apellido debe comenzar con mayúscula y contener solo letras.\nEjemplo: González");
+            return;
+        }
+
+        // Validar teléfono (10-14 dígitos, solo números)
+        if (!telefono.matches("\\d{10,14}")) {
+            mostrarAlertaError("Error", "Teléfono inválido",
+                "El teléfono debe contener entre 10 y 14 dígitos (solo números).\nEjemplo: 1123456789");
+            return;
+        }
+
+        // Validar email (debe contener @ y .com)
+        if (!email.contains("@") || !email.endsWith(".com")) {
+            mostrarAlertaError("Error", "Email inválido",
+                "El email debe contener @ y terminar en .com\nEjemplo: maria@ejemplo.com");
+            return;
+        }
+
+        // Validación adicional de formato de email
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$")) {
+            mostrarAlertaError("Error", "Email inválido",
+                "Por favor, ingrese un email válido.\nEjemplo: maria@ejemplo.com");
             return;
         }
 

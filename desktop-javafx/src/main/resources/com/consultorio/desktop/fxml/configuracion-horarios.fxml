@@ -215,10 +215,10 @@
     <HBox spacing="20" alignment="CENTER" style="-fx-padding: 15 0 0 0;">
         <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancelar"
                 styleClass="cosmos-button"
-                style="-fx-background-color: #6B7280; -fx-pref-width: 140; -fx-font-weight: bold;"/>
+                style="-fx-pref-width: 200; -fx-font-weight: bold;"/>
         <Button fx:id="btnGuardar" text="Guardar Configuración" onAction="#handleGuardar"
                 styleClass="cosmos-button"
-                style="-fx-pref-width: 180; -fx-font-weight: bold;"/>
+                style="-fx-pref-width: 200; -fx-font-weight: bold;"/>
     </HBox>
 
 </VBox>

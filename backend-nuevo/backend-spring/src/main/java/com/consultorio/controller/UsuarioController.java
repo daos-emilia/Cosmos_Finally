@@ -51,15 +51,20 @@ public class UsuarioController {
 
     // POST: Crear nuevo usuario
     @PostMapping
-    public Usuario createUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.save(usuario);
+    public Usuario createUsuario(
+            @RequestBody Usuario usuario,
+            @RequestHeader(value = "X-Usuario", required = false) String usuarioCreador) {
+        return usuarioService.save(usuario, usuarioCreador);
     }
 
     // PUT: Actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> updateUsuario(
+            @PathVariable Long id,
+            @RequestBody Usuario usuario,
+            @RequestHeader(value = "X-Usuario", required = false) String usuarioModificador) {
         try {
-            Usuario usuarioActualizado = usuarioService.update(id, usuario);
+            Usuario usuarioActualizado = usuarioService.update(id, usuario, usuarioModificador);
             return ResponseEntity.ok(usuarioActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -97,9 +102,12 @@ public class UsuarioController {
 
     // PUT: Cambiar estado de usuario
     @PutMapping("/{id}/estado")
-    public ResponseEntity<Usuario> cambiarEstado(@PathVariable Long id, @RequestParam boolean activo) {
+    public ResponseEntity<Usuario> cambiarEstado(
+            @PathVariable Long id,
+            @RequestParam boolean activo,
+            @RequestHeader(value = "X-Usuario", required = false) String usuarioModificador) {
         try {
-            Usuario usuario = usuarioService.cambiarEstado(id, activo);
+            Usuario usuario = usuarioService.cambiarEstado(id, activo, usuarioModificador);
             return ResponseEntity.ok(usuario);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

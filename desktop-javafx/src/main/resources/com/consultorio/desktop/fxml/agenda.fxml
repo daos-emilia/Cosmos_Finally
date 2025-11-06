@@ -32,7 +32,6 @@
             <!-- Panel de Configuración Actual -->
             <VBox spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10; -fx-max-width: 700; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="⚙️" style="-fx-font-size: 18px;"/>
                     <Label text="Configuración Horaria Actual"
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
                 </HBox>
@@ -41,7 +40,7 @@
 
                 <!-- Días de trabajo -->
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="📅 Días de trabajo:" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-min-width: 180; -fx-font-size: 14px;"/>
+                    <Label text="- Días de trabajo:" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-min-width: 180; -fx-font-size: 14px;"/>
                     <Label fx:id="lblDiasTrabajo" text="Cargando..." style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
                 </HBox>
 
@@ -53,25 +52,25 @@
                     </columnConstraints>
 
                     <!-- Turno Mañana -->
-                    <Label text="🌅 Turno Mañana:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                    <Label text="- Turno Mañana:" GridPane.columnIndex="0" GridPane.rowIndex="0"
                            style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
                     <Label fx:id="lblTurnoManana" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="0"
                            style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
                     <!-- Turno Tarde -->
-                    <Label text="🌆 Turno Tarde:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                    <Label text="- Turno Tarde:" GridPane.columnIndex="0" GridPane.rowIndex="1"
                            style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
                     <Label fx:id="lblTurnoTarde" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="1"
                            style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
                     <!-- Duración Sesión -->
-                    <Label text="⏱️ Duración sesión:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                    <Label text="- Duración sesión:" GridPane.columnIndex="0" GridPane.rowIndex="2"
                            style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
                     <Label fx:id="lblDuracionSesion" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="2"
                            style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>
 
                     <!-- Tiempo Descanso -->
-                    <Label text="☕ Tiempo descanso:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                    <Label text="- Tiempo descanso:" GridPane.columnIndex="0" GridPane.rowIndex="3"
                            style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-font-size: 14px;"/>
                     <Label fx:id="lblTiempoDescanso" text="Cargando..." GridPane.columnIndex="1" GridPane.rowIndex="3"
                            style="-fx-text-fill: #7FBBB2; -fx-font-weight: bold; -fx-font-size: 14px;"/>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.FichaUsuarioController"
+      spacing="20" styleClass="ficha-paciente-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Ficha de Usuario" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="20">
+
+            <!-- SECCIÓN: INFORMACIÓN PERSONAL -->
+            <VBox spacing="15" styleClass="info-section">
+                <Label text="Información Personal" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <GridPane hgap="20" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- COLUMNA 1 -->
+                    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <HBox spacing="10">
+                            <Label text="Nombre:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblNombre" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Apellido:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblApellido" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="DNI:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblDni" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Teléfono:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblTelefono" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Email:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblEmail" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Email Validado:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblEmailValidado" text="-" styleClass="field-value"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- COLUMNA 2 -->
+                    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Contraseña:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblPassword" text="••••••••" styleClass="field-value"/>
+                            <Button fx:id="btnMostrarPassword" text="👁" onAction="#handleMostrarPassword"
+                                    styleClass="cosmos-link-button" minWidth="30"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Tipo de Usuario:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblTipo" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <VBox fx:id="vboxMatricula" spacing="10" visible="false" managed="false">
+                            <HBox spacing="10">
+                                <Label text="Matrícula:" styleClass="field-label" minWidth="120"/>
+                                <Label fx:id="lblMatricula" text="-" styleClass="field-value"/>
+                            </HBox>
+                        </VBox>
+
+                        <HBox spacing="10">
+                            <Label text="Estado:" styleClass="field-label" minWidth="120"/>
+                            <Label fx:id="lblEstado" text="-" styleClass="field-value"/>
+                        </HBox>
+                    </VBox>
+                </GridPane>
+            </VBox>
+
+            <!-- SECCIÓN: INFORMACIÓN DE AUDITORÍA -->
+            <VBox spacing="15" styleClass="info-section">
+                <Label text="Información de Auditoría" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <GridPane hgap="20" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- COLUMNA 1 -->
+                    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <HBox spacing="10">
+                            <Label text="Fecha de Alta:" styleClass="field-label" minWidth="150"/>
+                            <Label fx:id="lblFechaCreacion" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Creado Por:" styleClass="field-label" minWidth="150"/>
+                            <Label fx:id="lblCreadoPor" text="-" styleClass="field-value"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- COLUMNA 2 -->
+                    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <HBox spacing="10">
+                            <Label text="Última Actualización:" styleClass="field-label" minWidth="150"/>
+                            <Label fx:id="lblFechaActualizacion" text="-" styleClass="field-value"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Actualizado Por:" styleClass="field-label" minWidth="150"/>
+                            <Label fx:id="lblActualizadoPor" text="-" styleClass="field-value"/>
+                        </HBox>
+                    </VBox>
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="btnModificar" text="Modificar Información" onAction="#handleModificar"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnCambiarEstado" text="Cambiar Estado" onAction="#handleCambiarEstado"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Button>
+
+        <Button text="Volver" onAction="#handleVolver" styleClass="cosmos-button">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

@@ -72,29 +72,31 @@ public class LoginController {
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Registro de Secretaria - Cosmos");
+            stage.setTitle("Registro de Secretaria - Consultorio Cosmos");
 
-            // Tamaño fijo para la ventana de registro
-            Scene scene = new Scene(root, 450, 580);
+            Scene scene = new Scene(root);
 
-            // Intentar cargar CSS
+            // Cargar CSS
             try {
-                java.net.URL cssUrl = getClass().getResource("/com/consultorio/desktop/styles/styles.css");
-                if (cssUrl != null) {
-                    scene.getStylesheets().add(cssUrl.toExternalForm());
+                var cssResource = getClass().getResource("/com/consultorio/desktop/styles/styles.css");
+                if (cssResource != null) {
+                    scene.getStylesheets().add(cssResource.toExternalForm());
                 }
-            } catch (Exception cssError) {
-                System.out.println("Error cargando CSS: " + cssError.getMessage());
+            } catch (Exception e) {
+                System.out.println("⚠️ No se pudo cargar CSS: " + e.getMessage());
             }
 
             stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Configurar como ventana modal y no redimensionable
-            stage.initModality(Modality.WINDOW_MODAL);
+            // Hacer la ventana responsive (igual que formulario-usuario)
+            stage.setMinWidth(650);
+            stage.setMinHeight(600);
+            stage.setWidth(700);
+            stage.setHeight(650);
+
+            // Obtener el stage padre y pasarlo al controlador
             Stage parentStage = (Stage) usernameField.getScene().getWindow();
-            stage.initOwner(parentStage);
-
-            // Obtener el controlador y pasarle el stage padre DESPUÉS de crear la escena
             RegistroSecretariaController registroController = loader.getController();
             registroController.setParentStage(parentStage);
 

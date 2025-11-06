@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.FormularioUsuarioController"
+      spacing="20" styleClass="ficha-paciente-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblTitulo" text="Agregar Usuario" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="20">
+
+            <!-- SECCIÓN: DATOS DEL USUARIO -->
+            <VBox spacing="15" styleClass="info-section">
+                <Label text="Datos del Usuario" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <GridPane hgap="20" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- COLUMNA 1 -->
+                    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Nombre *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <TextField fx:id="txtNombre" promptText="Ingrese el nombre" styleClass="cosmos-text-field"/>
+
+                        <Label text="Apellido *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <TextField fx:id="txtApellido" promptText="Ingrese el apellido" styleClass="cosmos-text-field"/>
+
+                        <Label text="DNI (será su usuario) *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="cosmos-text-field"/>
+
+                        <Label text="Teléfono *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="cosmos-text-field"/>
+                    </VBox>
+
+                    <!-- COLUMNA 2 -->
+                    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Correo Electrónico *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <TextField fx:id="txtEmail" promptText="Ingrese el email" styleClass="cosmos-text-field"/>
+
+                        <Label text="Tipo de Usuario *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                        <ComboBox fx:id="cmbTipo" promptText="Seleccione el tipo" styleClass="cosmos-combo-box"
+                                  maxWidth="Infinity"/>
+
+                        <VBox fx:id="vboxMatricula" spacing="10" visible="false" managed="false">
+                            <Label text="Matrícula *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+                            <TextField fx:id="txtMatricula" promptText="Ingrese la matrícula"
+                                       styleClass="cosmos-text-field"/>
+                        </VBox>
+                    </VBox>
+                </GridPane>
+            </VBox>
+
+            <!-- SECCIÓN: INFORMACIÓN DE CONTRASEÑA -->
+            <VBox spacing="10" styleClass="info-section">
+                <Label text="Información de Contraseña" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <Label fx:id="lblInfoPassword" text="Solo el propio usuario puede cambiar su contraseña desde su perfil."
+                       styleClass="field-value">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </Label>
+
+                <HBox spacing="10" styleClass="info-box">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                    <Label text="ℹ️" styleClass="field-label">
+                        <font>
+                            <Font size="16"/>
+                        </font>
+                    </Label>
+                    <VBox spacing="5">
+                        <Label text="Al crear un nuevo usuario:" styleClass="field-label">
+                            <font>
+                                <Font size="13"/>
+                            </font>
+                        </Label>
+                        <Label text="• La contraseña por defecto será: Primera_Vez"
+                               styleClass="field-value">
+                            <font>
+                                <Font size="12"/>
+                            </font>
+                        </Label>
+                        <Label text="• Se le enviará un mail de bienvenida con la contraseña al usuario"
+                               styleClass="field-value">
+                            <font>
+                                <Font size="12"/>
+                            </font>
+                        </Label>
+                        <Label text="• El usuario deberá cambiar su contraseña en el primer inicio de sesión"
+                               styleClass="field-value">
+                            <font>
+                                <Font size="12"/>
+                            </font>
+                        </Label>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Cancelar" onAction="#handleCancelar" styleClass="cosmos-button">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnGuardar" text="Guardar" onAction="#handleGuardar" styleClass="cosmos-button">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

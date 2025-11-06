@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.ConfiguracionEstadisticasController"
+      spacing="20"
+      stylesheets="@../styles/styles.css"
+      style="-fx-background-color: linear-gradient(to bottom, #E2F2EF, #EBEAE5); -fx-padding: 30;">
+
+    <!-- Título -->
+    <Label text="Configurar Gráfico Estadístico"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+
+    <!-- Panel de configuración -->
+    <VBox spacing="20"
+          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+
+        <!-- Selección de tema -->
+        <VBox spacing="8">
+            <Label text="Tema del Gráfico *"
+                   style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+            <ComboBox fx:id="cmbTema"
+                      promptText="Seleccione un tema"
+                      styleClass="cosmos-combo-box"
+                      prefWidth="400"
+                      onAction="#handleTemaSeleccionado"/>
+        </VBox>
+
+        <!-- Selección de periodo (solo para Nuevos Pacientes) -->
+        <VBox fx:id="vboxPeriodo" spacing="8" visible="false" managed="false">
+            <Label text="Periodo *"
+                   style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+            <ComboBox fx:id="cmbPeriodo"
+                      promptText="Seleccione un periodo"
+                      styleClass="cosmos-combo-box"
+                      prefWidth="400"
+                      onAction="#handlePeriodoSeleccionado"/>
+        </VBox>
+
+        <!-- Selección de fecha de inicio (solo para Nuevos Pacientes) -->
+        <VBox fx:id="vboxFechaInicio" spacing="8" visible="false" managed="false">
+            <Label text="Fecha de Inicio *"
+                   style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
+            <DatePicker fx:id="dpFechaInicio"
+                        promptText="Seleccione una fecha"
+                        styleClass="agenda-date-picker"
+                        prefWidth="400"/>
+        </VBox>
+
+        <!-- Botones -->
+        <HBox spacing="15" alignment="CENTER" style="-fx-padding: 20 0 0 0;">
+            <Button text="Generar"
+                    onAction="#handleGenerar"
+                    styleClass="cosmos-button"
+                    prefWidth="150"/>
+            <Button text="Cancelar"
+                    onAction="#handleCancelar"
+                    styleClass="cosmos-button"
+                    prefWidth="150"/>
+        </HBox>
+    </VBox>
+</VBox>
+

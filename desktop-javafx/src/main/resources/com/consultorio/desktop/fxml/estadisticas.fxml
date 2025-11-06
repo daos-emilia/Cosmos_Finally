@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.consultorio.desktop.controllers.EstadisticasController"
+            stylesheets="@../styles/styles.css">
+
+    <!-- CENTER: Contenido principal -->
+    <center>
+        <VBox spacing="30" alignment="TOP_CENTER" style="-fx-padding: 40; -fx-background-color: linear-gradient(to bottom, #E2F2EF, #EBEAE5);">
+
+            <!-- Título y botones -->
+            <HBox spacing="20" alignment="CENTER">
+                <Label text="Gráficos Estadísticos" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #7FBBB2;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnGenerarGrafico"
+                        text="Generar Gráfico"
+                        onAction="#handleAbrirConfiguracion"
+                        styleClass="cosmos-button"
+                        prefWidth="200"/>
+                <Button text="Volver al inicio" onAction="#handleVolver" styleClass="cosmos-button" prefWidth="200"/>
+            </HBox>
+
+            <!-- Área del gráfico -->
+            <VBox spacing="15"
+                  style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 30; -fx-border-color: #C3DFE3; -fx-border-width: 2; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); -fx-min-height: 500;"
+                  alignment="CENTER">
+
+                <!-- Título del gráfico -->
+                <Label fx:id="lblTituloGrafico"
+                       text="Aquí se mostrará el Gráfico generado"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;"/>
+
+                <!-- Información del gráfico -->
+                <Label fx:id="lblInfoGrafico"
+                       text="Seleccione 'Generar Gráfico' para comenzar"
+                       style="-fx-font-size: 14px; -fx-text-fill: #6B7280; -fx-font-style: italic;"
+                       wrapText="true"/>
+
+                <!-- Contenedor del gráfico -->
+                <StackPane fx:id="contenedorGrafico" prefHeight="400" prefWidth="700">
+                    <!-- Mensaje inicial -->
+                    <VBox fx:id="mensajeInicial" alignment="CENTER" spacing="15">
+                        <Label text="📊" style="-fx-font-size: 80px;"/>
+                        <Label text="No hay gráficos generados aún"
+                               style="-fx-font-size: 16px; -fx-text-fill: #6B7280;"/>
+                        <Label text="Presione 'Generar Gráfico' para crear uno"
+                               style="-fx-font-size: 14px; -fx-text-fill: #9CA3AF;"/>
+                    </VBox>
+                </StackPane>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
+

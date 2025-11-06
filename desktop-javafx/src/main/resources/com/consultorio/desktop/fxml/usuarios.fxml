@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.UsuariosController"
+      spacing="20" styleClass="agenda-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO Y BOTÓN VOLVER -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Gestión de Usuarios" styleClass="dashboard-title">
+            <font>
+                <Font size="32"/>
+            </font>
+        </Label>
+
+        <!-- Espaciador -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Botón Volver -->
+        <Button text="Volver al inicio" onAction="#handleVolverDashboard" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+    <!-- BARRA DE BÚSQUEDA Y FILTROS -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <!-- Campo de búsqueda -->
+        <TextField fx:id="txtBuscar" promptText="Buscar por nombre o apellido..." prefWidth="250"
+                   styleClass="cosmos-text-field"/>
+
+        <Button text="Buscar" onAction="#handleBuscar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button text="Limpiar" onAction="#handleLimpiarBusqueda" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <!-- Espaciador -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Filtro por Rol -->
+        <Label text="Rol:">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="cmbFiltroRol" promptText="Todos" prefWidth="150" styleClass="cosmos-combo-box"/>
+
+        <!-- Filtro por Estado -->
+        <Label text="Estado:">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="cmbFiltroEstado" promptText="Todos" prefWidth="120" styleClass="cosmos-combo-box"/>
+    </HBox>
+
+    <!-- CONTADOR DE USUARIOS -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Total de usuarios:" styleClass="info-label">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Label>
+        <Label fx:id="lblTotalUsuarios" text="0" styleClass="info-value">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- TABLA DE USUARIOS -->
+    <TableView fx:id="tablaUsuarios" VBox.vgrow="ALWAYS" styleClass="cosmos-table">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Nombre Completo" prefWidth="250"/>
+            <TableColumn fx:id="colRol" text="Rol" prefWidth="150"/>
+            <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="btnAgregarUsuario" text="Agregar Usuario" onAction="#handleAgregarUsuario" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnVerUsuario" text="Ver Usuario" onAction="#handleVerUsuario" disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnModificarUsuario" text="Modificar Usuario" onAction="#handleModificarUsuario" disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnCambiarEstado" text="Cambiar Estado" onAction="#handleCambiarEstado" disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

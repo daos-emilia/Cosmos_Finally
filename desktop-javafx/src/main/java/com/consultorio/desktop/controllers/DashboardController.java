@@ -360,14 +360,85 @@ public class DashboardController {
     @FXML
     private void handleEstadisticas() {
         if (!"Secretaria".equals(rolActual)) {
-            mostrarMensajeFuncionalidad("Estadísticas y Reportes");
+            try {
+                System.out.println("Navegando a Estadísticas...");
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/consultorio/desktop/fxml/estadisticas.fxml"));
+                Parent root = loader.load();
+
+                EstadisticasController controller = loader.getController();
+                Stage currentStage = (Stage) lblUsuario.getScene().getWindow();
+                boolean wasMaximized = currentStage.isMaximized();
+                controller.setUsuario(usuarioActual, rolActual, currentStage, wasMaximized);
+
+                Stage stage = new Stage();
+                stage.setTitle("Estadísticas - Consultorio Cosmos");
+
+                Scene scene = new Scene(root, 1200, 800);
+                stage.setScene(scene);
+
+                // Restaurar estado de maximización
+                if (wasMaximized) {
+                    stage.setMaximized(true);
+                }
+
+                // Cerrar ventana actual
+                currentStage.close();
+
+                stage.show();
+
+            } catch (Exception e) {
+                System.out.println("Error al cargar Estadísticas: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
     private void handleGestionUsuarios() {
         if (!"Secretaria".equals(rolActual)) {
-            mostrarMensajeFuncionalidad("Gestión de Usuarios");
+            try {
+                System.out.println("Navegando a Gestión de Usuarios...");
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/consultorio/desktop/fxml/usuarios.fxml"));
+                Parent root = loader.load();
+
+                UsuariosController controller = loader.getController();
+                controller.setUsuario(usuarioActual, rolActual);
+
+                Stage stage = new Stage();
+                stage.setTitle("Cosmos - Gestión de Usuarios");
+
+                // Crear Scene y aplicar CSS
+                Scene scene = new Scene(root, 1200, 800);
+
+                // Cargar CSS
+                try {
+                    var cssResource = getClass().getResource("/com/consultorio/desktop/styles/styles.css");
+                    if (cssResource != null) {
+                        scene.getStylesheets().add(cssResource.toExternalForm());
+                    }
+                } catch (Exception e) {
+                    System.out.println("⚠️ No se pudo cargar CSS: " + e.getMessage());
+                }
+
+                stage.setScene(scene);
+
+                // Mantener el mismo estado de maximizado
+                Stage currentStage = (Stage) lblUsuario.getScene().getWindow();
+                if (currentStage.isMaximized()) {
+                    stage.setMaximized(true);
+                }
+
+                stage.show();
+
+                // Cerrar dashboard actual
+                currentStage.close();
+
+            } catch (IOException e) {
+                mostrarAlertaError("Error", "No se pudo abrir Gestión de Usuarios", e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 

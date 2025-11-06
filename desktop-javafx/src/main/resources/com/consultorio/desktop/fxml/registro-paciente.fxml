@@ -43,46 +43,46 @@
 
                 <!-- Fila 1 -->
                 <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <Label text="Nombre *" styleClass="cosmos-login-label"/>
+                    <Label text="Nombre *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <TextField fx:id="txtNombre" promptText="Ingrese el nombre" styleClass="cosmos-text-field"/>
                 </VBox>
 
                 <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                    <Label text="Apellido *" styleClass="cosmos-login-label"/>
+                    <Label text="Apellido *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <TextField fx:id="txtApellido" promptText="Ingrese el apellido" styleClass="cosmos-text-field"/>
                 </VBox>
 
                 <!-- Fila 2 -->
                 <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Label text="DNI * (será su usuario)" styleClass="cosmos-login-label"/>
+                    <Label text="DNI  (será su usuario) *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="cosmos-text-field"/>
                 </VBox>
 
                 <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Label text="Teléfono *" styleClass="cosmos-login-label"/>
+                    <Label text="Teléfono *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="cosmos-text-field"/>
                 </VBox>
 
                 <!-- Fila 3 -->
                 <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Label text="Correo Electrónico *" styleClass="cosmos-login-label"/>
+                    <Label text="Correo Electrónico *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <TextField fx:id="txtEmail" promptText="ejemplo@correo.com" styleClass="cosmos-text-field"/>
                 </VBox>
 
                 <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <Label text="Fecha de Nacimiento *" styleClass="cosmos-login-label"/>
+                    <Label text="Fecha de Nacimiento *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <DatePicker fx:id="dpFechaNacimiento" promptText="Seleccione la fecha"
                                 styleClass="agenda-date-picker" prefWidth="9999"/>
                 </VBox>
 
                 <!-- Fila 4 -->
                 <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                    <Label text="Nivel Educativo *" styleClass="cosmos-login-label"/>
+                    <Label text="Nivel Educativo *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <ComboBox fx:id="cmbNivelEducativo" promptText="Seleccione el nivel" prefWidth="9999"/>
                 </VBox>
 
                 <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <Label text="Condición *" styleClass="cosmos-login-label"/>
+                    <Label text="Condición *" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                     <ComboBox fx:id="cmbCondicion" promptText="Seleccione la condición" prefWidth="9999"/>
                 </VBox>
             </GridPane>
@@ -98,14 +98,14 @@
 
             <!-- Antecedentes -->
             <VBox spacing="5">
-                <Label text="Antecedentes" styleClass="cosmos-login-label"/>
+                <Label text="Antecedentes" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                 <TextArea fx:id="txtAntecedentes" promptText="Ingrese antecedentes médicos, psicológicos, educativos, etc."
                           prefRowCount="4" wrapText="true"/>
             </VBox>
 
             <!-- Observaciones -->
             <VBox spacing="5">
-                <Label text="Observaciones" styleClass="cosmos-login-label"/>
+                <Label text="Observaciones" style="-fx-font-size: 14px; -fx-text-fill: #2C3E50;"/>
                 <TextArea fx:id="txtObservaciones" promptText="Ingrese observaciones adicionales"
                           prefRowCount="4" wrapText="true"/>
             </VBox>
