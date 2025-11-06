@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.InformePacienteController"
+      spacing="20" styleClass="informe-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblTitulo" text="Nuevo Informe de Evolución" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- INFORMACIÓN DEL PACIENTE -->
+    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="role-info">
+        <Label text="Paciente:" styleClass="cosmos-login-label"/>
+        <Label fx:id="lblPaciente" text="-">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Label>
+
+        <Label text="Fecha:" styleClass="cosmos-login-label"/>
+        <Label fx:id="lblFecha" text="-">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- FORMULARIO -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="20" styleClass="form-section">
+
+            <!-- TÍTULO DEL INFORME -->
+            <VBox spacing="8">
+                <Label text="Título del Informe *" styleClass="cosmos-login-label">
+                    <font>
+                        <Font size="14"/>
+                    </font>
+                </Label>
+                <TextField fx:id="txtTituloInforme" promptText="Ej: Evaluación inicial, Seguimiento mensual, etc."
+                           styleClass="cosmos-text-field">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </TextField>
+            </VBox>
+
+            <!-- CONTENIDO DEL INFORME -->
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Label text="Contenido del Informe *" styleClass="cosmos-login-label">
+                    <font>
+                        <Font size="14"/>
+                    </font>
+                </Label>
+                <TextArea fx:id="txtContenidoInforme" promptText="Escriba aquí el informe de evolución del paciente..."
+                          wrapText="true" prefRowCount="15" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </TextArea>
+            </VBox>
+
+            <!-- SUGERENCIAS -->
+            <VBox spacing="8" styleClass="suggestions-box">
+                <Label text="💡 Sugerencias para el informe:" styleClass="cosmos-login-label">
+                    <font>
+                        <Font size="13"/>
+                    </font>
+                </Label>
+                <Label text="• Describa el progreso observado desde la última sesión" wrapText="true">
+                    <font>
+                        <Font size="12"/>
+                    </font>
+                </Label>
+                <Label text="• Mencione las actividades realizadas y los resultados obtenidos" wrapText="true">
+                    <font>
+                        <Font size="12"/>
+                    </font>
+                </Label>
+                <Label text="• Indique las áreas que requieren mayor atención" wrapText="true">
+                    <font>
+                        <Font size="12"/>
+                    </font>
+                </Label>
+                <Label text="• Incluya recomendaciones para el próximo período" wrapText="true">
+                    <font>
+                        <Font size="12"/>
+                    </font>
+                </Label>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- BOTONES -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Cancelar" onAction="#handleCancelar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnGuardar" text="Guardar Informe" onAction="#handleGuardar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

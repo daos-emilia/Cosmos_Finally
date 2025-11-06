@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.HistorialEvolucionController"
+      spacing="20" styleClass="agenda-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Historial de Evolución" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- INFORMACIÓN DEL PACIENTE -->
+    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="role-info">
+        <Label text="Paciente:" styleClass="cosmos-login-label"/>
+        <Label fx:id="lblPaciente" text="-">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Label>
+
+        <Label text="Total de informes:" styleClass="cosmos-login-label"/>
+        <Label fx:id="lblTotalInformes" text="0">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- TABLA DE INFORMES -->
+    <TableView fx:id="tablaInformes" VBox.vgrow="ALWAYS" styleClass="agenda-list-view">
+        <columns>
+            <TableColumn fx:id="colTitulo" text="Título del Informe" prefWidth="400"/>
+            <TableColumn fx:id="colFecha" text="Fecha de Creación" prefWidth="200"/>
+            <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <!-- MENSAJE CUANDO NO HAY INFORMES -->
+    <Label fx:id="lblSinInformes" text="No hay informes registrados para este paciente"
+           styleClass="empty-message" visible="false">
+        <font>
+            <Font size="14" name="System Italic"/>
+        </font>
+    </Label>
+
+    <!-- BOTONES -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="btnNuevoInforme" text="Nuevo Informe" onAction="#handleNuevoInforme" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button text="Cerrar" onAction="#handleCerrar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

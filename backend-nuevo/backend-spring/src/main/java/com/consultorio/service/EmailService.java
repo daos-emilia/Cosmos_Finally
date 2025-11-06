@@ -22,6 +22,10 @@ public class EmailService {
     private String fromEmail;
 
     public void enviarEmailBienvenidaYValidacion(String toEmail, String nombre, String apellido, String tokenValidacion) {
+        enviarEmailBienvenidaYValidacion(toEmail, nombre, apellido, tokenValidacion, null);
+    }
+
+    public void enviarEmailBienvenidaYValidacion(String toEmail, String nombre, String apellido, String tokenValidacion, String passwordInicial) {
         String validacionUrl = baseUrl + "/api/usuarios/validar-email?token=" + tokenValidacion;
         String logoUrl = baseUrl + "/images/logo.png";
 
@@ -30,15 +34,27 @@ public class EmailService {
         System.out.println("📨 Email: " + toEmail);
         System.out.println("🔗 URL: " + validacionUrl);
 
+        // Construir mensaje de contraseña si se proporciona
+        String passwordInfo = "";
+        if (passwordInicial != null && !passwordInicial.isEmpty()) {
+            passwordInfo = String.format(
+                "<div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;'>" +
+                "<p style='margin: 0 0 10px 0;'><strong>📌 Información de acceso:</strong></p>" +
+                "<p style='margin: 0;'>Tu contraseña temporal es: <strong style='color: #2E86AB; font-size: 18px;'>%s</strong></p>" +
+                "<p style='margin: 10px 0 0 0; font-size: 14px; color: #666;'><em>Por seguridad, te recomendamos cambiarla en tu primer inicio de sesión.</em></p>" +
+                "</div>", passwordInicial
+            );
+        }
+
         // Usar el email configurado en las variables de entorno
         String jsonBody = String.format("""
             {
                 "from": "%s",
                 "to": ["%s"],
                 "subject": "Consultorio Cosmos - Valida tu email",
-                "html": "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'><div style='text-align: center; margin-bottom: 20px;'><img src='%s' alt='Consultorio Cosmos' style='width: 120px; height: 120px; border-radius: 50%%;'></div><h2 style='color: #2E86AB; text-align: center;'>¡Bienvenido/a al Consultorio Cosmos!</h2><p>Hola <strong>%s %s</strong>,</p><p>Para activar tu cuenta en nuestro sistema, por favor valida tu email haciendo clic en el siguiente botón:</p><p style='text-align: center;'><a href='%s' style='background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;'>Validar Mi Email</a></p><p>O copia y pega este enlace en tu navegador:<br><code style='background: #f4f4f4; padding: 8px; border-radius: 3px;'>%s</code></p><p><em>Este enlace expirará en 24 horas.</em></p><hr style='border: none; border-top: 1px solid #eee;'><p style='color: #666;'>Si no te registraste en Consultorio Cosmos, por favor ignora este mensaje.</p><p><strong>Atentamente,</strong><br>Equipo del Consultorio Cosmos<br><span style='color: #2E86AB;'>consultorio.cosmos@gmail.com</span></p></div>"
+                "html": "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'><div style='text-align: center; margin-bottom: 20px;'><img src='%s' alt='Consultorio Cosmos' style='width: 120px; height: 120px; border-radius: 50%%;'></div><h2 style='color: #2E86AB; text-align: center;'>¡Bienvenido/a al Consultorio Cosmos!</h2><p>Hola <strong>%s %s</strong>,</p><p>Para activar tu cuenta en nuestro sistema, por favor valida tu email haciendo clic en el siguiente botón:</p><p style='text-align: center;'><a href='%s' style='background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;'>Validar Mi Email</a></p><p>O copia y pega este enlace en tu navegador:<br><code style='background: #f4f4f4; padding: 8px; border-radius: 3px;'>%s</code></p>%s<p><em>Este enlace expirará en 24 horas.</em></p><hr style='border: none; border-top: 1px solid #eee;'><p style='color: #666;'>Si no te registraste en Consultorio Cosmos, por favor ignora este mensaje.</p><p><strong>Atentamente,</strong><br>Equipo del Consultorio Cosmos<br><span style='color: #2E86AB;'>consultorio.cosmos@gmail.com</span></p></div>"
             }
-            """, fromEmail, toEmail, logoUrl, nombre, apellido, validacionUrl, validacionUrl);
+            """, fromEmail, toEmail, logoUrl, nombre, apellido, validacionUrl, validacionUrl, passwordInfo);
 
         try {
             HttpClient client = HttpClient.newHttpClient();

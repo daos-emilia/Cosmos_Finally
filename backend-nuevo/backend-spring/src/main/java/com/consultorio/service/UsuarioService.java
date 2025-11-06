@@ -1,6 +1,7 @@
 package com.consultorio.service;
 
 import com.consultorio.model.Usuario;
+import com.consultorio.model.Usuario.TipoUsuario;
 import com.consultorio.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,18 +54,26 @@ public class UsuarioService {
         usuario.generarTokenValidacion();  // Generar token único
         usuario.setEmailValidado(false);   // Email no validado por defecto
         usuario.setActivo(true);           // Usuario activo por defecto
-        usuario.setCreadoPor("sistema");   // Auditoría
+
+        // Solo establecer "sistema" si no tiene un creador ya asignado
+        if (usuario.getCreadoPor() == null || usuario.getCreadoPor().isEmpty()) {
+            usuario.setCreadoPor("sistema");
+        }
 
         // PRIMERO guardar el usuario en la base de datos
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
         // LUEGO enviar el email (esto puede fallar pero el usuario ya está guardado)
         try {
+            // Si es paciente, enviar la contraseña en el email
+            String passwordParaEmail = (usuarioGuardado.getTipo() == TipoUsuario.PACIENTE) ? "Primera_Vez" : null;
+
             emailService.enviarEmailBienvenidaYValidacion(
                     usuarioGuardado.getEmail(),
                     usuarioGuardado.getNombre(),
                     usuarioGuardado.getApellido(),
-                    usuarioGuardado.getTokenValidacion()
+                    usuarioGuardado.getTokenValidacion(),
+                    passwordParaEmail
             );
             System.out.println("✅ Email de validación enviado a: " + usuarioGuardado.getEmail());
         } catch (Exception e) {

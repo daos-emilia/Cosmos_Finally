@@ -1,6 +1,8 @@
 package com.consultorio.desktop.utils;
 
 import com.consultorio.desktop.models.Turno;
+import com.consultorio.desktop.models.Paciente;
+import com.consultorio.desktop.models.InformePaciente;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -19,8 +21,8 @@ import java.util.Map;
 
 public class HttpClientUtil {
 
-    private static final String BASE_URL = "http://localhost:8080/api";
-    //private static final String BASE_URL = "https://consultorio-cosmos-backend.onrender.com/api";
+    //private static final String BASE_URL = "http://localhost:8080/api";
+    private static final String BASE_URL = "https://consultorio-cosmos-backend.onrender.com/api";
 
     private static final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
@@ -525,5 +527,502 @@ public class HttpClientUtil {
     private static boolean parseBoolean(String value) {
         if (value == null || value.isEmpty() || value.equals("null")) return false;
         return "true".equalsIgnoreCase(value);
+    }
+
+    // ==================== MÉTODOS PARA PACIENTES ====================
+
+    /**
+     * Obtener todos los pacientes (ordenados por fecha de creación, más nuevos primero)
+     */
+    public static List<Paciente> getAllPacientes() {
+        try {
+            String url = BASE_URL + "/pacientes";
+            System.out.println("🔄 Obteniendo todos los pacientes...");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                List<Paciente> pacientes = parsePacientesFromJson(response.body());
+                System.out.println("✅ Pacientes recibidos: " + pacientes.size());
+                return pacientes;
+            } else {
+                System.out.println("❌ Error obteniendo pacientes: " + response.statusCode());
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Obtener pacientes activos
+     */
+    public static List<Paciente> getPacientesActivos() {
+        try {
+            String url = BASE_URL + "/pacientes/activos";
+            System.out.println("🔄 Obteniendo pacientes activos...");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return parsePacientesFromJson(response.body());
+            } else {
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Buscar pacientes por nombre o apellido
+     */
+    public static List<Paciente> buscarPacientes(String termino) {
+        try {
+            String url = BASE_URL + "/pacientes/buscar?termino=" + encodeValue(termino);
+            System.out.println("🔍 Buscando pacientes: " + termino);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return parsePacientesFromJson(response.body());
+            } else {
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Obtener paciente por ID
+     */
+    public static Paciente getPacienteById(Long id) {
+        try {
+            String url = BASE_URL + "/pacientes/" + id;
+            System.out.println("🔄 Obteniendo paciente ID: " + id);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return parsePacienteFromJson(response.body());
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Crear nuevo paciente
+     */
+    public static Paciente crearPaciente(Paciente paciente) {
+        return crearPaciente(paciente, null);
+    }
+
+    public static Paciente crearPaciente(Paciente paciente, String usuarioCreador) {
+        try {
+            String url = BASE_URL + "/pacientes";
+            String jsonBody = pacienteToJson(paciente);
+            System.out.println("📤 Creando paciente: " + jsonBody);
+            System.out.println("👤 Usuario creador: " + (usuarioCreador != null ? usuarioCreador : "No especificado"));
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody));
+
+            // Agregar header con usuario si está disponible
+            if (usuarioCreador != null && !usuarioCreador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioCreador);
+            }
+
+            HttpRequest request = requestBuilder.build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Paciente creado exitosamente");
+                return parsePacienteFromJson(response.body());
+            } else {
+                System.out.println("❌ Error creando paciente: " + response.statusCode());
+                System.out.println("Response: " + response.body());
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Actualizar paciente
+     */
+    public static Paciente actualizarPaciente(Long id, Paciente paciente) {
+        return actualizarPaciente(id, paciente, null);
+    }
+
+    public static Paciente actualizarPaciente(Long id, Paciente paciente, String usuarioModificador) {
+        try {
+            String url = BASE_URL + "/pacientes/" + id;
+            String jsonBody = pacienteToJson(paciente);
+            System.out.println("📤 Actualizando paciente ID " + id);
+            System.out.println("👤 Usuario modificador: " + (usuarioModificador != null ? usuarioModificador : "No especificado"));
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody));
+
+            // Agregar header con usuario si está disponible
+            if (usuarioModificador != null && !usuarioModificador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioModificador);
+            }
+
+            HttpRequest request = requestBuilder.build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Paciente actualizado exitosamente");
+                return parsePacienteFromJson(response.body());
+            } else {
+                System.out.println("❌ Error actualizando paciente: " + response.statusCode());
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Dar de baja paciente (borrado lógico)
+     */
+    public static boolean darDeBajaPaciente(Long id) {
+        return darDeBajaPaciente(id, null);
+    }
+
+    public static boolean darDeBajaPaciente(Long id, String usuarioEliminador) {
+        try {
+            String url = BASE_URL + "/pacientes/" + id;
+            System.out.println("📤 Dando de baja paciente ID: " + id);
+            System.out.println("👤 Usuario eliminador: " + (usuarioEliminador != null ? usuarioEliminador : "No especificado"));
+
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .DELETE();
+
+            // Agregar header con usuario si está disponible
+            if (usuarioEliminador != null && !usuarioEliminador.isEmpty()) {
+                requestBuilder.header("X-Usuario", usuarioEliminador);
+            }
+
+            HttpRequest request = requestBuilder.build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Paciente dado de baja exitosamente");
+                return true;
+            } else {
+                System.out.println("❌ Error dando de baja paciente: " + response.statusCode());
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ==================== MÉTODOS PARA INFORMES ====================
+
+    /**
+     * Obtener todos los informes de un paciente
+     */
+    public static List<InformePaciente> getInformesByPaciente(Long pacienteId) {
+        try {
+            String url = BASE_URL + "/informes/paciente/" + pacienteId;
+            System.out.println("🔄 Obteniendo informes del paciente ID: " + pacienteId);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                List<InformePaciente> informes = parseInformesFromJson(response.body());
+                System.out.println("✅ Informes recibidos: " + informes.size());
+                return informes;
+            } else {
+                System.out.println("❌ Error obteniendo informes: " + response.statusCode());
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Obtener informe por ID
+     */
+    public static InformePaciente getInformeById(Long id) {
+        try {
+            String url = BASE_URL + "/informes/" + id;
+            System.out.println("🔄 Obteniendo informe ID: " + id);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return parseInformeFromJson(response.body());
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Crear nuevo informe
+     */
+    public static InformePaciente crearInforme(InformePaciente informe) {
+        try {
+            String url = BASE_URL + "/informes";
+            String jsonBody = informeToJson(informe);
+            System.out.println("📤 Creando informe: " + jsonBody);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("✅ Informe creado exitosamente");
+                return parseInformeFromJson(response.body());
+            } else {
+                System.out.println("❌ Error creando informe: " + response.statusCode());
+                System.out.println("Response: " + response.body());
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // ==================== MÉTODOS DE PARSEO PARA PACIENTES ====================
+
+    private static List<Paciente> parsePacientesFromJson(String json) {
+        List<Paciente> pacientes = new ArrayList<>();
+        try {
+            json = json.trim();
+            if (!json.startsWith("[")) return pacientes;
+
+            json = json.substring(1, json.length() - 1);
+            List<String> objetos = splitJsonArray(json);
+
+            for (String obj : objetos) {
+                Paciente paciente = parsePacienteFromJson(obj);
+                if (paciente != null) {
+                    pacientes.add(paciente);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando pacientes: " + e.getMessage());
+        }
+        return pacientes;
+    }
+
+    private static Paciente parsePacienteFromJson(String json) {
+        try {
+            Paciente paciente = new Paciente();
+
+            paciente.setId(parseLong(extractValue(json, "id")));
+            paciente.setFechaNacimiento(extractValue(json, "fechaNacimiento"));
+            paciente.setNivelEducativo(extractValue(json, "nivelEducativo"));
+            paciente.setCondicion(extractValue(json, "condicion"));
+            paciente.setAntecedentes(extractValue(json, "antecedentes"));
+            paciente.setObservaciones(extractValue(json, "observaciones"));
+            paciente.setFotoPath(extractValue(json, "fotoPath"));
+            paciente.setFechaCreacion(extractValue(json, "fechaCreacion"));
+
+            // Parsear usuario anidado
+            String usuarioJson = extractNestedObject(json, "usuario");
+            if (usuarioJson != null && !usuarioJson.isEmpty()) {
+                paciente.setNombre(extractValue(usuarioJson, "nombre"));
+                paciente.setApellido(extractValue(usuarioJson, "apellido"));
+                paciente.setDni(extractValue(usuarioJson, "dni"));
+                paciente.setTelefono(extractValue(usuarioJson, "telefono"));
+                paciente.setEmail(extractValue(usuarioJson, "email"));
+                paciente.setActivo(parseBoolean(extractValue(usuarioJson, "activo")));
+                paciente.setUsuarioId(parseLong(extractValue(usuarioJson, "id")));
+            }
+
+            return paciente;
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando paciente: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static String pacienteToJson(Paciente p) {
+        StringBuilder json = new StringBuilder("{");
+
+        // Usuario
+        json.append("\"usuario\":{");
+        json.append("\"dni\":\"").append(escapeJson(p.getDni())).append("\",");
+        json.append("\"nombre\":\"").append(escapeJson(p.getNombre())).append("\",");
+        json.append("\"apellido\":\"").append(escapeJson(p.getApellido())).append("\",");
+        json.append("\"telefono\":\"").append(escapeJson(p.getTelefono())).append("\",");
+        json.append("\"email\":\"").append(escapeJson(p.getEmail())).append("\",");
+        json.append("\"tipo\":\"PACIENTE\"");
+        json.append("},");
+
+        // Datos del paciente
+        json.append("\"fechaNacimiento\":\"").append(p.getFechaNacimiento()).append("\",");
+        json.append("\"nivelEducativo\":\"").append(p.getNivelEducativo()).append("\",");
+        json.append("\"condicion\":\"").append(escapeJson(p.getCondicion())).append("\"");
+
+        if (p.getAntecedentes() != null && !p.getAntecedentes().isEmpty()) {
+            json.append(",\"antecedentes\":\"").append(escapeJson(p.getAntecedentes())).append("\"");
+        }
+
+        if (p.getObservaciones() != null && !p.getObservaciones().isEmpty()) {
+            json.append(",\"observaciones\":\"").append(escapeJson(p.getObservaciones())).append("\"");
+        }
+
+        json.append("}");
+        return json.toString();
+    }
+
+    // ==================== MÉTODOS DE PARSEO PARA INFORMES ====================
+
+    private static List<InformePaciente> parseInformesFromJson(String json) {
+        List<InformePaciente> informes = new ArrayList<>();
+        try {
+            json = json.trim();
+            if (!json.startsWith("[")) return informes;
+
+            json = json.substring(1, json.length() - 1);
+            List<String> objetos = splitJsonArray(json);
+
+            for (String obj : objetos) {
+                InformePaciente informe = parseInformeFromJson(obj);
+                if (informe != null) {
+                    informes.add(informe);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando informes: " + e.getMessage());
+        }
+        return informes;
+    }
+
+    private static InformePaciente parseInformeFromJson(String json) {
+        try {
+            InformePaciente informe = new InformePaciente();
+
+            informe.setId(parseLong(extractValue(json, "id")));
+            informe.setTitulo(extractValue(json, "titulo"));
+            informe.setContenido(extractValue(json, "contenido"));
+            informe.setFechaCreacion(extractValue(json, "fechaCreacion"));
+            informe.setPacienteId(parseLong(extractValue(json, "pacienteId")));
+
+            return informe;
+        } catch (Exception e) {
+            System.out.println("❌ Error parseando informe: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static String informeToJson(InformePaciente i) {
+        StringBuilder json = new StringBuilder("{");
+
+        json.append("\"paciente\":{\"id\":").append(i.getPacienteId()).append("},");
+        json.append("\"titulo\":\"").append(escapeJson(i.getTitulo())).append("\",");
+        json.append("\"contenido\":\"").append(escapeJson(i.getContenido())).append("\"");
+
+        json.append("}");
+        return json.toString();
+    }
+
+    // ==================== MÉTODOS AUXILIARES ====================
+
+    private static String extractNestedObject(String json, String key) {
+        try {
+            int keyIndex = json.indexOf("\"" + key + "\":");
+            if (keyIndex == -1) return null;
+
+            int startIndex = json.indexOf("{", keyIndex);
+            if (startIndex == -1) return null;
+
+            int braceCount = 1;
+            int endIndex = startIndex + 1;
+
+            while (endIndex < json.length() && braceCount > 0) {
+                char c = json.charAt(endIndex);
+                if (c == '{') braceCount++;
+                else if (c == '}') braceCount--;
+                endIndex++;
+            }
+
+            return json.substring(startIndex, endIndex);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static String escapeJson(String value) {
+        if (value == null) return "";
+        return value.replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t");
     }
 }

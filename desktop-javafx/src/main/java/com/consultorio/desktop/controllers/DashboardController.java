@@ -301,8 +301,48 @@ public class DashboardController {
 
     @FXML
     private void handlePacientes() {
-        System.out.println("Navegando a Pacientes...");
-        mostrarMensajeFuncionalidad("Gestión de Pacientes");
+        try {
+            System.out.println("Navegando a Pacientes...");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/consultorio/desktop/fxml/pacientes.fxml"));
+            Parent root = loader.load();
+
+            PacientesController controller = loader.getController();
+            controller.setUsuario(usuarioActual, rolActual);
+
+            Stage stage = new Stage();
+            stage.setTitle("Cosmos - Gestión de Pacientes");
+
+            // Crear Scene y aplicar CSS
+            Scene scene = new Scene(root, 1200, 800);
+
+            // Cargar CSS
+            try {
+                var cssResource = getClass().getResource("/com/consultorio/desktop/styles/styles.css");
+                if (cssResource != null) {
+                    scene.getStylesheets().add(cssResource.toExternalForm());
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️ No se pudo cargar CSS: " + e.getMessage());
+            }
+
+            stage.setScene(scene);
+
+            // Mantener el mismo estado de maximizado
+            Stage currentStage = (Stage) lblUsuario.getScene().getWindow();
+            if (currentStage.isMaximized()) {
+                stage.setMaximized(true);
+            }
+
+            stage.show();
+
+            // Cerrar dashboard actual
+            currentStage.close();
+
+        } catch (IOException e) {
+            mostrarAlertaError("Error", "No se pudo abrir Gestión de Pacientes", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

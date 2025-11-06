@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.RegistroPacienteController"
+      spacing="20" styleClass="agenda-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblTitulo" text="Registrar Nuevo Paciente" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- FORMULARIO -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="15" styleClass="form-section">
+
+            <!-- DATOS PERSONALES -->
+            <Label text="Datos Personales" styleClass="turnos-title">
+                <font>
+                    <Font size="16"/>
+                </font>
+            </Label>
+
+            <Separator/>
+
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <!-- Fila 1 -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Nombre *" styleClass="cosmos-login-label"/>
+                    <TextField fx:id="txtNombre" promptText="Ingrese el nombre" styleClass="cosmos-text-field"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Apellido *" styleClass="cosmos-login-label"/>
+                    <TextField fx:id="txtApellido" promptText="Ingrese el apellido" styleClass="cosmos-text-field"/>
+                </VBox>
+
+                <!-- Fila 2 -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="DNI * (será su usuario)" styleClass="cosmos-login-label"/>
+                    <TextField fx:id="txtDni" promptText="Ingrese el DNI" styleClass="cosmos-text-field"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Teléfono *" styleClass="cosmos-login-label"/>
+                    <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" styleClass="cosmos-text-field"/>
+                </VBox>
+
+                <!-- Fila 3 -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Correo Electrónico *" styleClass="cosmos-login-label"/>
+                    <TextField fx:id="txtEmail" promptText="ejemplo@correo.com" styleClass="cosmos-text-field"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Fecha de Nacimiento *" styleClass="cosmos-login-label"/>
+                    <DatePicker fx:id="dpFechaNacimiento" promptText="Seleccione la fecha"
+                                styleClass="agenda-date-picker" prefWidth="9999"/>
+                </VBox>
+
+                <!-- Fila 4 -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label text="Nivel Educativo *" styleClass="cosmos-login-label"/>
+                    <ComboBox fx:id="cmbNivelEducativo" promptText="Seleccione el nivel" prefWidth="9999"/>
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label text="Condición *" styleClass="cosmos-login-label"/>
+                    <ComboBox fx:id="cmbCondicion" promptText="Seleccione la condición" prefWidth="9999"/>
+                </VBox>
+            </GridPane>
+
+            <!-- DATOS CLÍNICOS -->
+            <Label text="Datos Clínicos" styleClass="turnos-title">
+                <font>
+                    <Font size="16"/>
+                </font>
+            </Label>
+
+            <Separator/>
+
+            <!-- Antecedentes -->
+            <VBox spacing="5">
+                <Label text="Antecedentes" styleClass="cosmos-login-label"/>
+                <TextArea fx:id="txtAntecedentes" promptText="Ingrese antecedentes médicos, psicológicos, educativos, etc."
+                          prefRowCount="4" wrapText="true"/>
+            </VBox>
+
+            <!-- Observaciones -->
+            <VBox spacing="5">
+                <Label text="Observaciones" styleClass="cosmos-login-label"/>
+                <TextArea fx:id="txtObservaciones" promptText="Ingrese observaciones adicionales"
+                          prefRowCount="4" wrapText="true"/>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- BOTONES -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Cancelar" onAction="#handleCancelar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnGuardar" text="Guardar" onAction="#handleGuardar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

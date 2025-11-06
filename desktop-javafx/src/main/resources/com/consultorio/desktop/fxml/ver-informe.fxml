@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.VerInformeController"
+      spacing="20" styleClass="informe-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Informe de Evolución" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- INFORMACIÓN DEL INFORME -->
+    <VBox spacing="15" styleClass="role-info">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Paciente:" styleClass="cosmos-login-label">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+            <Label fx:id="lblPaciente" text="-" styleClass="cosmos-login-label">
+                <font>
+                    <Font size="14" name="System Bold"/>
+                </font>
+            </Label>
+        </HBox>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Fecha:" styleClass="cosmos-login-label">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+            <Label fx:id="lblFecha" text="-" styleClass="cosmos-login-label">
+                <font>
+                    <Font size="14" name="System Bold"/>
+                </font>
+            </Label>
+        </HBox>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Título:" styleClass="cosmos-login-label">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+            <Label fx:id="lblTitulo" text="-" styleClass="cosmos-login-label" wrapText="true" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="14" name="System Bold"/>
+                </font>
+            </Label>
+        </HBox>
+    </VBox>
+
+    <!-- CONTENIDO DEL INFORME -->
+    <VBox spacing="10" VBox.vgrow="ALWAYS">
+        <Label text="Contenido del Informe" styleClass="cosmos-login-label">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Label>
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+            <TextArea fx:id="txtContenido" wrapText="true" editable="false" VBox.vgrow="ALWAYS"
+                      style="-fx-background-color: #f5f5f5; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5;">
+                <font>
+                    <Font size="13"/>
+                </font>
+            </TextArea>
+        </ScrollPane>
+    </VBox>
+
+    <!-- BOTONES -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Descargar PDF" onAction="#handleDescargarPDF" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button text="Cerrar" onAction="#handleCerrar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

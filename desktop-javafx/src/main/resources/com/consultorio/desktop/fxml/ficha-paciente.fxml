@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.FichaPacienteController"
+      spacing="20" styleClass="ficha-paciente-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblTitulo" text="Ficha del Paciente" styleClass="dashboard-title">
+            <font>
+                <Font size="28"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="20">
+
+            <!-- SECCIÓN: INFORMACIÓN PERSONAL -->
+            <VBox spacing="15" styleClass="info-section">
+                <Label text="Información Personal" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <HBox spacing="30">
+                    <!-- FOTO -->
+                    <VBox alignment="CENTER" spacing="10">
+                        <ImageView fx:id="imgFotoPaciente" fitWidth="150" fitHeight="150" preserveRatio="true"
+                                   styleClass="patient-photo"/>
+                        <Button fx:id="btnCambiarFoto" text="Cambiar Foto" onAction="#handleCambiarFoto"
+                                styleClass="cosmos-button">
+                            <font>
+                                <Font size="12"/>
+                            </font>
+                        </Button>
+                    </VBox>
+
+                    <!-- DATOS PERSONALES -->
+                    <GridPane hgap="20" vgap="12" HBox.hgrow="ALWAYS">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <Label text="Nombre Completo:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblNombreCompleto" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label text="DNI:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblDni" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="Fecha de Nacimiento:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblFechaNacimiento" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="Edad:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblEdad" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblTelefono" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="5"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblEmail" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                        <Label text="Fecha de Registro:" GridPane.columnIndex="0" GridPane.rowIndex="6"
+                               styleClass="cosmos-login-label"/>
+                        <Label fx:id="lblFechaRegistro" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                    </GridPane>
+                </HBox>
+            </VBox>
+
+            <!-- SECCIÓN: DATOS CLÍNICOS -->
+            <VBox spacing="15" styleClass="info-section">
+                <Label text="Datos Clínicos" styleClass="turnos-title">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+                <Separator/>
+
+                <GridPane hgap="20" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="25"/>
+                        <ColumnConstraints percentWidth="75"/>
+                    </columnConstraints>
+
+                    <Label text="Nivel Educativo:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           styleClass="cosmos-login-label"/>
+                    <Label fx:id="lblNivelEducativo" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Condición:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           styleClass="cosmos-login-label"/>
+                    <Label fx:id="lblCondicion" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+
+                <!-- Antecedentes -->
+                <VBox spacing="5">
+                    <Label text="Antecedentes:" styleClass="cosmos-login-label"/>
+                    <TextArea fx:id="txtAntecedentes" editable="false" wrapText="true" prefRowCount="3"/>
+                </VBox>
+
+                <!-- Observaciones -->
+                <VBox spacing="5">
+                    <Label text="Observaciones:" styleClass="cosmos-login-label"/>
+                    <TextArea fx:id="txtObservaciones" editable="false" wrapText="true" prefRowCount="3"/>
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="btnModificarInformacion" text="Modificar Información" onAction="#handleModificarInformacion"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnDarDeBaja" text="Dar de Baja" onAction="#handleDarDeBaja"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnRealizarInforme" text="Realizar Informe" onAction="#handleRealizarInforme"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnHistorialEvolucion" text="Historial de Evolución" onAction="#handleHistorialEvolucion"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button text="Volver" onAction="#handleVolver"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+

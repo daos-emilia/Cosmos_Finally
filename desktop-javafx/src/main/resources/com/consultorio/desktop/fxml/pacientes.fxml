@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.consultorio.desktop.controllers.PacientesController"
+      spacing="20" styleClass="agenda-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- TÍTULO Y BOTÓN VOLVER -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Gestión de Pacientes" styleClass="dashboard-title">
+            <font>
+                <Font size="32"/>
+            </font>
+        </Label>
+
+        <!-- Espaciador -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Botón Volver -->
+        <Button text="Volver al inicio" onAction="#handleVolverDashboard" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+    <!-- BARRA DE BÚSQUEDA Y BOTONES -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <!-- Campo de búsqueda -->
+        <TextField fx:id="txtBuscar" promptText="Buscar por nombre o apellido..." prefWidth="300"
+                   styleClass="cosmos-text-field"/>
+
+        <Button text="Buscar" onAction="#handleBuscar" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button text="Limpiar" onAction="#handleLimpiarBusqueda" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <!-- Espaciador -->
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Botones de acción -->
+        <Button fx:id="btnAgregarPaciente" text="Agregar Paciente" onAction="#handleAgregarPaciente"
+                styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnModificarPaciente" text="Modificar Paciente" onAction="#handleModificarPaciente"
+                disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+
+        <Button fx:id="btnDarDeBaja" text="Dar de Baja" onAction="#handleDarDeBaja"
+                disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="13" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+    <!-- TABLA DE PACIENTES -->
+    <TableView fx:id="tablaPacientes" VBox.vgrow="ALWAYS" styleClass="agenda-list-view">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
+            <TableColumn fx:id="colApellido" text="Apellido" prefWidth="200"/>
+            <TableColumn fx:id="colDni" text="DNI" prefWidth="120"/>
+            <TableColumn fx:id="colEdad" text="Edad" prefWidth="80"/>
+            <TableColumn fx:id="colCondicion" text="Condición" prefWidth="250"/>
+            <TableColumn fx:id="colEstado" text="Estado" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- BOTÓN VER PACIENTE (aparece al seleccionar) -->
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="btnVerPaciente" text="Ver Ficha del Paciente" onAction="#handleVerPaciente"
+                disable="true" styleClass="cosmos-button">
+            <font>
+                <Font size="14" name="System Bold"/>
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
+
